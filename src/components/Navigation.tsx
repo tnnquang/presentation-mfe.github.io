@@ -185,7 +185,7 @@ export const Navigation = ({
                 }}
                 transition={{ duration: 0.3 }}
             >
-                <div className="flex items-center gap-2 px-4 py-3 rounded-2xl 
+                <div className="flex items-center gap-2 p-3 rounded-2xl 
                        bg-[#1e1e2e]/90 backdrop-blur-xl border border-white/10 
                        shadow-2xl shadow-black/50">
 
