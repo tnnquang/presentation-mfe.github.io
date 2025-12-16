@@ -63,7 +63,7 @@ export const Slide = ({
                     )}
                     {slideNumber && totalSlides && (
                         <motion.div
-                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10"
+                            className="flex items-center gap-2 p-2 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.3 }}

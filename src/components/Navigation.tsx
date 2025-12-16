@@ -185,7 +185,7 @@ export const Navigation = ({
                 }}
                 transition={{ duration: 0.3 }}
             >
-                <div className="flex items-center gap-2 p-3 rounded-2xl 
+                <div className="flex items-center gap-2 p-2 rounded-2xl 
                        bg-[#1e1e2e]/90 backdrop-blur-xl border border-white/10 
                        shadow-2xl shadow-black/50">
 
@@ -193,7 +193,7 @@ export const Navigation = ({
                     <button
                         onClick={() => onNavigate(0)}
                         disabled={currentSlide === 0}
-                        className="p-2.5 rounded-xl hover:bg-white/10 transition-all duration-200 
+                        className="p-1 rounded-xl hover:bg-white/10 transition-all duration-200 
                        disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
                         title="First slide (Home)"
                     >
@@ -206,7 +206,7 @@ export const Navigation = ({
                     <button
                         onClick={goPrev}
                         disabled={currentSlide === 0}
-                        className="p-2.5 rounded-xl hover:bg-white/10 transition-all duration-200 
+                        className="p-1 rounded-xl hover:bg-white/10 transition-all duration-200 
                        disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
                         title="Previous (←)"
                     >
@@ -214,17 +214,17 @@ export const Navigation = ({
                     </button>
 
                     {/* Slide counter */}
-                    <div className="min-w-[100px] text-center px-4 py-2 rounded-xl bg-white/5">
-                        <span className="text-xl font-bold text-[var(--accent-cyan)]">{currentSlide + 1}</span>
+                    <div className="min-w-[100px] text-center p-1 rounded-xl bg-white/5">
+                        <span className="text-base font-bold text-[var(--accent-cyan)]">{currentSlide + 1}</span>
                         <span className="text-[var(--text-muted)] mx-1">/</span>
-                        <span className="text-lg text-[var(--text-secondary)]">{totalSlides}</span>
+                        <span className="text-base text-[var(--text-secondary)]">{totalSlides}</span>
                     </div>
 
                     {/* Next */}
                     <button
                         onClick={goNext}
                         disabled={currentSlide === totalSlides - 1}
-                        className="p-2.5 rounded-xl hover:bg-white/10 transition-all duration-200 
+                        className="p-1 rounded-xl hover:bg-white/10 transition-all duration-200 
                        disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
                         title="Next (→)"
                     >

