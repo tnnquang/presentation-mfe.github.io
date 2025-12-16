@@ -1125,9 +1125,647 @@ export function mount({ history, basename }) {
         ),
     },
 
-    // ===== SLIDE 30: Thank You =====
+    // ===== SLIDE 31: remoteEntry.js Deep Dive =====
     {
-        id: 30,
+        id: 31,
+        title: 'remoteEntry.js là gì?',
+        section: 'Module Federation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    remoteEntry.js - File Manifest
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <motion.div className="glass p-4 rounded-lg mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <h4 className="text-[var(--accent-cyan)] font-bold mb-2">📦 Nội dung chứa gì?</h4>
+                            <ul className="text-sm space-y-1 text-[var(--text-secondary)]">
+                                <li>• Tên của remote app</li>
+                                <li>• Danh sách modules được expose</li>
+                                <li>• Version của shared dependencies</li>
+                                <li>• Paths đến actual chunk files</li>
+                            </ul>
+                        </motion.div>
+                        <motion.div className="glass p-4 rounded-lg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                            <h4 className="text-[var(--accent-orange)] font-bold mb-2">🔄 Naming Convention</h4>
+                            <Table
+                                headers={['Framework', 'Default Name']}
+                                rows={[
+                                    ['Webpack', 'remoteEntry.js'],
+                                    ['UmiJS v4', 'remote.js'],
+                                    ['Vite', 'remoteEntry.js'],
+                                ]}
+                            />
+                        </motion.div>
+                    </div>
+                    <CodeBlock
+                        title="Có thể đổi tên"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`// Vite
+federation({ 
+  filename: 'customRemote.js' 
+})
+
+// Webpack
+new ModuleFederationPlugin({ 
+  filename: 'my-entry.js' 
+})`}
+                    />
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 32: Shared Dependencies Deep Dive =====
+    {
+        id: 32,
+        title: 'Shared Dependencies chi tiết',
+        section: 'Module Federation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Cấu hình Shared Dependencies
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <Table
+                            headers={['Option', 'Mô tả']}
+                            rows={[
+                                ['<code>singleton</code>', 'Chỉ 1 instance (React BẮT BUỘC!)'],
+                                ['<code>eager</code>', 'Load ngay, không lazy'],
+                                ['<code>requiredVersion</code>', 'Version tối thiểu'],
+                                ['<code>strictVersion</code>', 'Phải đúng version'],
+                            ]}
+                        />
+                    </div>
+                    <CodeBlock
+                        title="Ví dụ đầy đủ"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`shared: {
+  react: {
+    singleton: true,  // BẮT BUỘC
+    eager: true,      // Tránh flash
+    requiredVersion: '^18.0.0',
+  },
+  antd: {
+    singleton: true,
+  },
+  lodash: {
+    // Không singleton OK
+  },
+}`}
+                    />
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg border-2 border-[var(--accent-red)]/50 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-red)]">⚠️ Quan trọng:</strong> React PHẢI là singleton, nếu không hooks sẽ break!
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 33: CSS Modules Example =====
+    {
+        id: 33,
+        title: 'CSS Modules - Ví dụ thực tế',
+        section: 'CSS Isolation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    CSS Modules - Code Example
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <CodeBlock
+                        title="Button.module.css"
+                        language="css"
+                        showLineNumbers={false}
+                        code={`.btn {
+  background: red;
+  padding: 10px;
+}
+
+.btnPrimary {
+  background: blue;
+}`}
+                    />
+                    <CodeBlock
+                        title="Button.tsx"
+                        language="tsx"
+                        showLineNumbers={false}
+                        code={`import styles from './Button.module.css';
+
+const Button = ({ primary }) => (
+  <button className={
+    primary ? styles.btnPrimary : styles.btn
+  }>
+    Click me
+  </button>
+);
+
+// Output HTML:
+// <button class="Button_btn_a1b2c3">`}
+                    />
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-green)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                    <strong className="text-[var(--accent-green)]">✅ Kết quả:</strong> Class name tự động unique → Không conflict!
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 34: Styled Components Example =====
+    {
+        id: 34,
+        title: 'CSS-in-JS Example',
+        section: 'CSS Isolation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Styled Components - Code Example
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <CodeBlock
+                        title="Button.tsx"
+                        language="tsx"
+                        showLineNumbers={false}
+                        code={`import styled from 'styled-components';
+
+const StyledButton = styled.button\`
+  background: \${p => p.primary ? 'blue' : 'red'};
+  padding: 10px;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+\`;
+
+// Output: <button class="sc-bdfBQB kTzXmj">`}
+                    />
+                    <div className="space-y-4">
+                        <motion.div className="glass p-4 rounded-lg" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                            <h4 className="text-[var(--accent-green)] font-bold mb-2">✅ Ưu điểm</h4>
+                            <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                                <li>• Dynamic styles dễ dàng</li>
+                                <li>• Co-located với component</li>
+                                <li>• Full CSS support</li>
+                            </ul>
+                        </motion.div>
+                        <motion.div className="glass p-4 rounded-lg" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
+                            <h4 className="text-[var(--accent-red)] font-bold mb-2">❌ Nhược điểm</h4>
+                            <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                                <li>• Runtime cost</li>
+                                <li>• Cần share lib trong MFE</li>
+                                <li>• Học syntax mới</li>
+                            </ul>
+                        </motion.div>
+                    </div>
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 35: Global CSS Handling =====
+    {
+        id: 35,
+        title: 'Xử lý Global CSS',
+        section: 'CSS Isolation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Ai quản lý Global CSS?
+                </h2>
+                <Table
+                    headers={['Loại CSS', 'Ai quản lý', 'Cách làm']}
+                    rows={[
+                        ['Reset/Normalize', '<span class="text-[var(--accent-blue)]">Host only</span>', 'Import 1 lần ở host'],
+                        ['Design Tokens', '<span class="text-[var(--accent-purple)]">Shared</span>', 'CSS Variables ở :root'],
+                        ['Component Styles', '<span class="text-[var(--accent-green)]">Mỗi Remote</span>', 'CSS Modules'],
+                        ['Utility Classes', '<span class="text-[var(--accent-orange)]">Host hoặc Shared</span>', 'Tailwind với prefix'],
+                    ]}
+                />
+                <CodeBlock
+                    title="host/global.css"
+                    language="css"
+                    showLineNumbers={false}
+                    code={`@import 'normalize.css';
+
+:root {
+  --primary-color: #1890ff;
+  --font-family: 'Inter', sans-serif;
+}
+
+/* Remote KHÔNG nên có global styles! */`}
+                />
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 36: Single History Instance =====
+    {
+        id: 36,
+        title: 'Single History Instance',
+        section: 'Navigation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Routing: Single History Pattern
+                </h2>
+                <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-blue)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Nguyên tắc:</strong> Chỉ có 1 history instance. Host sở hữu và share cho remotes.</p>
+                </motion.div>
+                <div className="grid grid-cols-2 gap-4">
+                    <CodeBlock
+                        title="shared/history.ts"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`import { createBrowserHistory } from 'history';
+
+// Singleton - tất cả apps dùng chung
+export const history = createBrowserHistory();`}
+                    />
+                    <CodeBlock
+                        title="Remote sử dụng"
+                        language="tsx"
+                        showLineNumbers={false}
+                        code={`// Remote nhận history từ props
+const ProductsApp = ({ history, basePath }) => (
+  <Router history={history}>
+    <Routes>
+      <Route path={\`\${basePath}/list\`} 
+             element={<ProductList />} />
+    </Routes>
+  </Router>
+);`}
+                    />
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 37: Lazy Load Routes =====
+    {
+        id: 37,
+        title: 'Lazy Load Remote Routes',
+        section: 'Navigation',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Pattern: Lazy Load Remote Components
+                </h2>
+                <CodeBlock
+                    title="host/pages/products/index.tsx"
+                    language="tsx"
+                    code={`import { Suspense, lazy } from 'react';
+import { useHistory } from 'umi';
+
+// Lazy load từ remote
+const ProductGrid = lazy(() => import('remote2/ProductGrid'));
+
+const ProductsPage = () => {
+  const history = useHistory();
+  
+  return (
+    <Suspense fallback={<Loading />}>
+      <ProductGrid 
+        onProductClick={(id) => history.push(\`/products/\${id}\`)}
+      />
+    </Suspense>
+  );
+};`}
+                    highlightLines={[5, 11, 12, 13]}
+                />
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 38: Testing Strategy =====
+    {
+        id: 38,
+        title: 'Testing Strategy',
+        section: 'Testing',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    Chiến lược Testing cho MFE
+                </h2>
+                <div className="grid grid-cols-3 gap-4">
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <h4 className="text-[var(--accent-blue)] font-bold mb-3">🔬 Unit Tests</h4>
+                        <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                            <li>• Vitest / Jest</li>
+                            <li>• Test isolated components</li>
+                            <li>• Mock remote imports</li>
+                            <li>• Fast feedback</li>
+                        </ul>
+                    </motion.div>
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                        <h4 className="text-[var(--accent-green)] font-bold mb-3">🔗 Integration Tests</h4>
+                        <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                            <li>• Testing Library</li>
+                            <li>• Test host + remotes</li>
+                            <li>• Mock network</li>
+                            <li>• CI/CD integration</li>
+                        </ul>
+                    </motion.div>
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                        <h4 className="text-[var(--accent-purple)] font-bold mb-3">🌐 E2E Tests</h4>
+                        <ul className="text-xs text-[var(--text-secondary)] space-y-1">
+                            <li>• Playwright / Cypress</li>
+                            <li>• Full stack testing</li>
+                            <li>• Real remotes</li>
+                            <li>• Slow but thorough</li>
+                        </ul>
+                    </motion.div>
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-cyan)]">💡 Tip:</strong> Mock remotes trong Unit/Integration tests. Chỉ dùng real remotes trong E2E.
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 39: Troubleshooting =====
+    {
+        id: 39,
+        title: 'Troubleshooting',
+        section: 'Troubleshooting',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    Lỗi thường gặp & Cách fix
+                </h2>
+                <Table
+                    headers={['Lỗi', 'Nguyên nhân', 'Cách fix']}
+                    rows={[
+                        ['<span class="text-[var(--accent-red)]">Shared module not found</span>', 'Version mismatch', 'Check requiredVersion'],
+                        ['<span class="text-[var(--accent-red)]">Invalid hook call</span>', 'Multiple React instances', 'Set singleton: true'],
+                        ['<span class="text-[var(--accent-red)]">Failed to fetch</span>', 'Remote server down', 'Add Error Boundary'],
+                        ['<span class="text-[var(--accent-red)]">CSS conflict</span>', 'Global CSS', 'Use CSS Modules'],
+                        ['<span class="text-[var(--accent-red)]">Back button broken</span>', 'Multiple history', 'Share single history'],
+                    ]}
+                />
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 40: Error Boundary =====
+    {
+        id: 40,
+        title: 'Error Boundary Pattern',
+        section: 'Troubleshooting',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    Xử lý lỗi khi Remote fail
+                </h2>
+                <CodeBlock
+                    title="RemoteWrapper.tsx"
+                    language="tsx"
+                    code={`class RemoteErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-fallback">
+          <p>Remote không khả dụng</p>
+          <button onClick={() => window.location.reload()}>
+            Thử lại
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}`}
+                    highlightLines={[9, 10, 11, 12, 13, 14, 15, 16]}
+                />
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 41: Bidirectional Sharing =====
+    {
+        id: 41,
+        title: 'Bidirectional Sharing',
+        section: 'Advanced',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    App vừa là Host vừa là Remote?
+                </h2>
+                <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-green)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <p className="text-sm"><strong className="text-[var(--accent-green)]">✅ CÓ THỂ!</strong> Gọi là "Bidirectional Hosts"</p>
+                </motion.div>
+                <div className="grid grid-cols-2 gap-6">
+                    <motion.div className="glass p-6 rounded-lg text-center" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-blue)] font-bold mb-2">App A</h4>
+                        <p className="text-xs text-[var(--text-muted)] mb-2">(host + remote)</p>
+                        <div className="text-sm">
+                            <div className="text-[var(--accent-green)]">exposes: ./CompA</div>
+                            <div className="text-[var(--accent-orange)]">remotes: appB</div>
+                        </div>
+                    </motion.div>
+                    <motion.div className="glass p-6 rounded-lg text-center" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-purple)] font-bold mb-2">App B</h4>
+                        <p className="text-xs text-[var(--text-muted)] mb-2">(host + remote)</p>
+                        <div className="text-sm">
+                            <div className="text-[var(--accent-green)]">exposes: ./CompB</div>
+                            <div className="text-[var(--accent-orange)]">remotes: appA</div>
+                        </div>
+                    </motion.div>
+                </div>
+                <motion.div className="mt-4 text-center text-[var(--accent-cyan)] text-2xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                    ◄───────────────►
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 42: Performance Tips =====
+    {
+        id: 42,
+        title: 'Performance Optimization',
+        section: 'Performance',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    Tối ưu Performance
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <h4 className="text-[var(--accent-green)] font-bold mb-3">✅ Nên làm</h4>
+                        <ul className="text-sm text-[var(--text-secondary)] space-y-2">
+                            <li>• <strong>Lazy load</strong> remote components</li>
+                            <li>• <strong>Prefetch</strong> remoteEntry.js</li>
+                            <li>• <strong>Cache</strong> với content hash</li>
+                            <li>• <strong>Share</strong> heavy dependencies</li>
+                            <li>• <strong>Code split</strong> trong remotes</li>
+                        </ul>
+                    </motion.div>
+                    <motion.div className="glass p-5 rounded-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                        <h4 className="text-[var(--accent-red)] font-bold mb-3">❌ Tránh</h4>
+                        <ul className="text-sm text-[var(--text-secondary)] space-y-2">
+                            <li>• Load tất cả remotes lúc start</li>
+                            <li>• Duplicate large dependencies</li>
+                            <li>• Too many small remotes</li>
+                            <li>• Eager load everything</li>
+                            <li>• Skip Error Boundary</li>
+                        </ul>
+                    </motion.div>
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 43: Summary =====
+    {
+        id: 43,
+        title: 'Tổng kết',
+        section: 'Summary',
+        variant: 'section',
+        content: (
+            <div className="w-full max-w-4xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    Tổng kết - Key Takeaways
+                </h2>
+                <div className="space-y-4">
+                    {[
+                        { title: 'Micro-Frontend', desc: 'Chia app lớn thành apps nhỏ, deploy độc lập', color: 'blue' },
+                        { title: 'Module Federation', desc: 'Load modules từ remote server tại runtime', color: 'purple' },
+                        { title: 'Host (Ứng dụng Cha)', desc: 'App chính consume modules từ remotes', color: 'green' },
+                        { title: 'Remote (Ứng dụng Con)', desc: 'App con expose modules cho host', color: 'orange' },
+                        { title: 'CSS Modules', desc: 'Recommend cho CSS isolation, zero config', color: 'cyan' },
+                        { title: 'Event Bus', desc: 'Communication giữa các MFE, loose coupling', color: 'pink' },
+                    ].map((item, i) => (
+                        <motion.div
+                            key={item.title}
+                            className={`glass p-4 rounded-xl border-l-4 border-[var(--accent-${item.color})] flex items-center gap-4`}
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.08 }}
+                        >
+                            <div>
+                                <h3 className={`font-bold text-[var(--accent-${item.color})]`}>{item.title}</h3>
+                                <p className="text-sm text-[var(--text-secondary)]">{item.desc}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 44: When NOT to use MFE =====
+    {
+        id: 44,
+        title: 'Khi nào KHÔNG nên dùng MFE?',
+        section: 'Summary',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    <span className="text-[var(--accent-red)]">⚠️</span> Khi nào KHÔNG nên dùng?
+                </h2>
+                <div className="grid grid-cols-2 gap-6">
+                    <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-red)]/50" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-red)] font-bold mb-4">❌ KHÔNG dùng khi</h4>
+                        <ul className="text-sm text-[var(--text-secondary)] space-y-2">
+                            <li>• App nhỏ, 1-3 developers</li>
+                            <li>• Không cần deploy độc lập</li>
+                            <li>• Team nhỏ, không có vấn đề coordination</li>
+                            <li>• Startup MVP cần ship nhanh</li>
+                            <li>• Chưa có DevOps maturity</li>
+                        </ul>
+                    </motion.div>
+                    <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-green)]/50" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-green)] font-bold mb-4">✅ NÊN dùng khi</h4>
+                        <ul className="text-sm text-[var(--text-secondary)] space-y-2">
+                            <li>• Team lớn (&gt;5 devs) hoặc nhiều team</li>
+                            <li>• Cần deploy độc lập các feature</li>
+                            <li>• Legacy migration dần dần</li>
+                            <li>• Nhiều product lines cùng platform</li>
+                            <li>• Scale organization, không chỉ code</li>
+                        </ul>
+                    </motion.div>
+                </div>
+                <motion.div className="mt-6 glass p-4 rounded-lg text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-cyan)]">💡 Remember:</strong> MFE thêm complexity đáng kể. Giải quyết vấn đề organization, không phải technical!
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 45: Module Loading Flow =====
+    {
+        id: 45,
+        title: 'Luồng Load Module',
+        section: 'Module Federation',
+        variant: 'diagram',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    Module Loading Flow
+                </h2>
+                <ModuleLoadingFlowDiagram />
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 46: Best Practices Checklist =====
+    {
+        id: 46,
+        title: 'Best Practices Checklist',
+        section: 'Summary',
+        content: (
+            <div className="w-full max-w-4xl mx-auto">
+                <h2 className="text-slide-header mb-6">
+                    MFE Best Practices Checklist
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    {[
+                        { category: 'Configuration', items: ['React: singleton=true', 'Shared dependencies đầy đủ', 'Version matching'] },
+                        { category: 'CSS', items: ['CSS Modules hoặc CSS-in-JS', 'Host owns global CSS', 'Remote scoped styles'] },
+                        { category: 'Routing', items: ['Single history instance', 'Lazy load remotes', 'Error Boundary'] },
+                        { category: 'Communication', items: ['Event Bus pattern', 'Type-safe events', 'Avoid tight coupling'] },
+                    ].map((group, i) => (
+                        <motion.div
+                            key={group.category}
+                            className="glass p-4 rounded-lg"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                        >
+                            <h4 className="text-[var(--accent-cyan)] font-bold mb-3">{group.category}</h4>
+                            <ul className="text-sm text-[var(--text-secondary)] space-y-1">
+                                {group.items.map((item, j) => (
+                                    <li key={j} className="flex items-center gap-2">
+                                        <span className="text-[var(--accent-green)]">✓</span> {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        ),
+    },
+
+    // ===== SLIDE 47: Thank You =====
+    {
+        id: 47,
         title: 'Cảm ơn!',
         section: 'End',
         variant: 'title',
