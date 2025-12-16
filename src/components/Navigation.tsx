@@ -9,6 +9,7 @@ interface NavigationProps {
     onToggleFullscreen?: () => void;
     onToggleTOC?: () => void;
     isFullscreen?: boolean;
+    slideTitles?: string[];
 }
 
 export const Navigation = ({
@@ -17,7 +18,8 @@ export const Navigation = ({
     onNavigate,
     onToggleFullscreen,
     onToggleTOC,
-    isFullscreen = false
+    isFullscreen = false,
+    slideTitles = []
 }: NavigationProps) => {
     const [showControls, setShowControls] = useState(true);
     const [showSlidePreview, setShowSlidePreview] = useState(false);
@@ -140,26 +142,33 @@ export const Navigation = ({
                     exit={{ opacity: 0 }}
                     onClick={() => setShowSlidePreview(false)}
                 >
-                    <div className="grid grid-cols-6 gap-4 max-w-6xl">
+                    <div className="grid grid-cols-5 gap-3 max-w-5xl w-full">
                         {Array.from({ length: totalSlides }, (_, i) => (
                             <motion.button
                                 key={i}
-                                className={`aspect-video rounded-lg border-2 flex items-center justify-center text-lg font-bold
-                           transition-all hover:scale-105
-                           ${currentSlide === i
-                                        ? 'border-[var(--accent-purple)] bg-[var(--accent-purple)]/30 text-white'
-                                        : 'border-white/20 bg-white/5 text-[var(--text-muted)] hover:border-white/40'
+                                className={`rounded-lg border-2 p-3 text-left
+                                   transition-all hover:scale-[1.02]
+                                   ${currentSlide === i
+                                        ? 'border-[var(--accent-purple)] bg-[var(--accent-purple)]/20 text-white'
+                                        : 'border-white/20 bg-white/5 text-[var(--text-muted)] hover:border-white/40 hover:bg-white/10'
                                     }`}
-                                initial={{ opacity: 0, scale: 0.8 }}
+                                initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: i * 0.02 }}
+                                transition={{ delay: i * 0.015 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onNavigate(i);
                                     setShowSlidePreview(false);
                                 }}
                             >
-                                {i + 1}
+                                <div className="flex items-start gap-2">
+                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${currentSlide === i ? 'bg-[var(--accent-purple)]' : 'bg-white/20'}`}>
+                                        {i + 1}
+                                    </span>
+                                    <span className="text-xs font-medium line-clamp-2 leading-tight">
+                                        {slideTitles[i] || `Slide ${i + 1}`}
+                                    </span>
+                                </div>
                             </motion.button>
                         ))}
                     </div>

@@ -74,6 +74,7 @@ function App() {
         onToggleFullscreen={toggleFullscreen}
         onToggleTOC={toggleTOC}
         isFullscreen={isFullscreen}
+        slideTitles={slides.map(s => s.title)}
       />
 
       <AnimatePresence>
