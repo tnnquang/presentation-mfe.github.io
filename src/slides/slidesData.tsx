@@ -376,13 +376,21 @@ export const slides: SlideData[] = [
                 <Table
                     headers={['Thuật ngữ', 'Định nghĩa']}
                     rows={[
-                        ['<span class="text-[var(--accent-blue)] font-bold">Host</span>', 'App tiêu thụ (consume) modules từ remotes'],
-                        ['<span class="text-[var(--accent-green)] font-bold">Remote</span>', 'App cung cấp (expose) modules cho hosts'],
-                        ['<span class="text-[var(--accent-orange)] font-bold">remoteEntry.js</span>', 'File metadata chứa thông tin về exposed modules'],
-                        ['<span class="text-[var(--accent-purple)] font-bold">Shared</span>', 'Dependencies được chia sẻ giữa host và remotes'],
-                        ['<span class="text-[var(--accent-cyan)] font-bold">Singleton</span>', 'Đảm bảo chỉ có 1 instance của dependency (React)'],
+                        ['<span class="text-[var(--accent-blue)] font-bold">Host</span> <span class="text-[var(--text-muted)]">(Ứng dụng Cha)</span>', 'App chính tiêu thụ (consume) modules từ các ứng dụng con'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Remote</span> <span class="text-[var(--text-muted)]">(Ứng dụng Con)</span>', 'App con cung cấp (expose) modules cho ứng dụng cha'],
+                        ['<span class="text-[var(--accent-orange)] font-bold">remoteEntry.js</span>', 'File manifest chứa thông tin về các modules được expose'],
+                        ['<span class="text-[var(--accent-purple)] font-bold">Shared</span>', 'Dependencies được chia sẻ giữa Host và Remote (React, antd...)'],
+                        ['<span class="text-[var(--accent-cyan)] font-bold">Singleton</span>', 'Đảm bảo chỉ có 1 instance của dependency (tránh multiple React)'],
                     ]}
                 />
+                <motion.div
+                    className="mt-6 glass p-4 rounded-lg border border-[var(--accent-blue)]/30 text-sm"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <strong className="text-[var(--accent-blue)]">💡 Lưu ý:</strong> Trong code config vẫn sử dụng thuật ngữ tiếng Anh (<code>remotes</code>, <code>exposes</code>, <code>host</code>) để đồng bộ với thư viện.
+                </motion.div>
             </div>
         ),
     },
@@ -572,22 +580,22 @@ const ProductsPage = () => {
     // ===== SLIDE 17: Cross-App Communication =====
     {
         id: 17,
-        title: 'Cross-App Communication',
+        title: 'Giao tiếp giữa các MFE',
         section: 'Communication',
         variant: 'section',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-8">
-                    Cross-App Communication
+                    Giao tiếp giữa các Micro-Frontend
                 </h2>
                 <Table
-                    headers={['Method', 'Scope', 'Pros', 'Cons']}
+                    headers={['Phương thức', 'Phạm vi', 'Ưu điểm', 'Nhược điểm']}
                     rows={[
-                        ['<span class="text-[var(--accent-blue)]">BroadcastChannel</span>', 'Same-origin, cross-tab', 'Simple, built-in', 'Same-origin only'],
-                        ['<span class="text-[var(--accent-green)]">MessageChannel</span>', 'Same page, cross-origin', 'Fast, bidirectional', 'Complex setup'],
-                        ['<span class="text-[var(--accent-purple)]">CustomEvent</span>', 'Same page', 'Very simple', 'Same page only'],
-                        ['<span class="text-[var(--accent-orange)]">PostMessage</span>', 'Cross-origin', 'Cross-origin', 'Security concerns'],
-                        ['<span class="text-[var(--accent-cyan)]">Shared State</span>', 'Same page', 'Type-safe', 'Same page only'],
+                        ['<span class="text-[var(--accent-blue)]">BroadcastChannel</span>', 'Cùng domain, nhiều tab', 'Đơn giản, có sẵn', 'Chỉ cùng domain'],
+                        ['<span class="text-[var(--accent-green)]">MessageChannel</span>', 'Cùng trang, khác origin', 'Nhanh, 2 chiều', 'Cấu hình phức tạp'],
+                        ['<span class="text-[var(--accent-purple)]">CustomEvent</span>', 'Cùng trang', 'Rất đơn giản', 'Chỉ cùng trang'],
+                        ['<span class="text-[var(--accent-orange)]">PostMessage</span>', 'Khác origin', 'Cross-origin', 'Lo ngại bảo mật'],
+                        ['<span class="text-[var(--accent-cyan)]">Shared State</span>', 'Cùng trang', 'Type-safe', 'Chỉ cùng trang'],
                     ]}
                 />
             </div>
@@ -619,7 +627,7 @@ channel.onmessage = (event) => {
   // { type: 'user:selected', userId: '123' }
 };`}
                 />
-                <div className="grid grid-cols-2 gap-4 mt-6">
+                <div className="grid grid-cols-2 gap-4 mt-8">
                     <div className="glass p-4 rounded-lg">
                         <h4 className="text-[var(--accent-green)] font-bold mb-2">✅ Pros</h4>
                         <ul className="text-sm space-y-1 text-[var(--text-secondary)]">
@@ -664,69 +672,70 @@ channel.onmessage = (event) => {
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-4">
-                    <span className="text-[var(--accent-purple)]">🧠</span> In-Memory Token = JS Variable = RAM
+                <h2 className="text-slide-header mb-6">
+                    <span className="text-[var(--accent-purple)]">🧠</span> In-Memory Token = Private Class = RAM
                 </h2>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
                         <CodeBlock
-                            title="tokenStore.ts"
+                            title="TokenStore.ts"
                             language="typescript"
                             showLineNumbers={false}
-                            code={`// Token lưu trong closure (RAM)
-let accessToken: string | null = null;
+                            code={`class TokenStore {
+  // Private variable - không thể access từ bên ngoài
+  #accessToken: string | null = null;
 
-export const tokenStore = {
-  set: (token: string) => {
-    accessToken = token; // → V8 Heap
-  },
-  get: () => accessToken,
-};`}
+  set(token: string) {
+    this.#accessToken = token; // → V8 Heap
+  }
+
+  get(): string | null {
+    return this.#accessToken;
+  }
+
+  clear() {
+    this.#accessToken = null;
+  }
+}
+
+// Singleton instance
+export const tokenStore = new TokenStore();`}
                         />
-                        <motion.div
-                            className="glass p-5 rounded-xl bg-[var(--accent-orange)]/10 border border-[var(--accent-orange)]/30"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            <p className="text-sm text-[var(--accent-orange)]">
-                                <strong>Lưu ý:</strong> Code có thể bị dịch ngược → attacker biết cách access. Đây chỉ là <strong>một lớp bảo vệ</strong>, không phải giải pháp hoàn hảo!
-                            </p>
-                        </motion.div>
                     </div>
                     <div className="space-y-4">
                         <motion.div
-                            className="glass p-6 rounded-xl border-2 border-[var(--accent-red)]/50"
+                            className="glass p-5 rounded-xl border-2 border-[var(--accent-red)]/50"
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                         >
-                            <h4 className="text-[var(--accent-red)] font-bold mb-2">localStorage</h4>
+                            <h4 className="text-[var(--accent-red)] font-bold mb-2">❌ localStorage - Rủi ro XSS</h4>
                             <p className="text-sm text-[var(--text-secondary)]">
-                                <code className="text-[var(--accent-orange)]">localStorage.getItem('token')</code> - XSS gọi trực tiếp được
+                                <code className="text-[var(--accent-orange)]">localStorage.getItem('token')</code>
+                                <br />Script độc hại gọi trực tiếp được → Lấy token ngay lập tức
                             </p>
                         </motion.div>
                         <motion.div
-                            className="glass p-6 rounded-xl border-2 border-[var(--accent-green)]/50"
+                            className="glass p-5 rounded-xl border-2 border-[var(--accent-green)]/50"
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
                         >
-                            <h4 className="text-[var(--accent-green)] font-bold mb-2">In-Memory</h4>
+                            <h4 className="text-[var(--accent-green)] font-bold mb-2">✅ Private Class - An toàn hơn</h4>
                             <p className="text-sm text-[var(--text-secondary)]">
-                                XSS phải biết module path + gọi đúng function. <strong>Khó hơn</strong> nhưng vẫn possible.
+                                Attacker phải import đúng module + gọi đúng hàm. <strong>Khó hơn nhiều</strong> nhưng vẫn cần kết hợp các lớp bảo vệ khác.
                             </p>
                         </motion.div>
                         <motion.div
-                            className="glass p-6 rounded-xl border-2 border-[var(--accent-cyan)]/50"
+                            className="glass p-5 rounded-xl border-2 border-[var(--accent-cyan)]/50"
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.2 }}
                         >
-                            <h4 className="text-[var(--accent-cyan)] font-bold mb-3">Defense in Depth (4 lớp)</h4>
-                            <ol className="text-sm space-y-2 text-[var(--text-secondary)] pl-4">
+                            <h4 className="text-[var(--accent-cyan)] font-bold mb-2">🛡️ Defense in Depth (4 lớp)</h4>
+                            <ol className="text-sm space-y-1 text-[var(--text-secondary)] pl-4">
                                 <li><strong>1.</strong> Ngăn XSS (CSP, sanitize) - <span className="text-[var(--accent-green)]">Quan trọng nhất</span></li>
                                 <li><strong>2.</strong> httpOnly cookie cho refresh token</li>
-                                <li><strong>3.</strong> In-memory cho access token</li>
+                                <li><strong>3.</strong> Private class cho access token</li>
                                 <li><strong>4.</strong> Short-lived tokens (5-15 phút)</li>
                             </ol>
                         </motion.div>

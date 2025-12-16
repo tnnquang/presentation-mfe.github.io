@@ -35,13 +35,15 @@ export const CodeBlock = ({
             ...dracula['pre[class*="language-"]'],
             background: 'transparent',
             margin: 0,
-            padding: '1.5rem',
-            fontSize: 'inherit'
+            padding: '0.75rem 1rem',
+            fontSize: 'inherit',
+            lineHeight: '1.4'
         },
         'code[class*="language-"]': {
             ...dracula['code[class*="language-"]'],
             background: 'transparent',
-            fontSize: 'inherit'
+            fontSize: 'inherit',
+            lineHeight: '1.4'
         }
     };
 

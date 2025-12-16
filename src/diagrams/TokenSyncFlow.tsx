@@ -13,10 +13,10 @@ export const TokenSyncFlowDiagram = () => {
 
     const messages = [
         { from: 0, to: 0, label: 'user.login()', type: 'self', num: 1 },
-        { from: 0, to: 0, label: 'tokenStore.set(accessToken)', type: 'self', num: 2, note: 'In-Memory' },
-        { from: 0, to: 1, label: 'postMessage({ type: "auth", token })', type: 'sync', num: 3 },
+        { from: 0, to: 0, label: 'tokenStore.set(token)', type: 'self', num: 2, note: 'In-Memory' },
+        { from: 0, to: 1, label: 'postMessage({ auth, token })', type: 'sync', num: 3 },
         { from: 1, to: 2, label: 'onmessage(event)', type: 'sync', num: 4, note: 'Broadcast' },
-        { from: 2, to: 2, label: 'tokenStore.set(event.data.token)', type: 'self', num: 5, note: 'Synced!' },
+        { from: 2, to: 2, label: 'tokenStore.set(token)', type: 'self', num: 5, note: 'Synced!' },
     ];
 
     return (
