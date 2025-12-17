@@ -12,7 +12,10 @@ import {
     EventBusDiagram,
     BroadcastChannelDiagram,
     MessageChannelDiagram,
-    CustomEventDiagram
+    CustomEventDiagram,
+    BidirectionalSharingDiagram,
+    ReverseProxyArchDiagram,
+    CredentialFlowDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -1812,7 +1815,200 @@ const ProductsPage = () => {
         ),
     },
 
-    // Slide 48: Qiankun vs Module Federation
+    // ==========================================
+    // PHẦN 9: PRODUCTION DEPLOYMENT (Slides 48-53)
+    // ==========================================
+
+    // Slide 48: Bidirectional Sharing
+    {
+        id: 48,
+        title: 'Bidirectional Sharing',
+        section: 'Phần 9: Production Deployment',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4 text-center">
+                    <span className="text-[var(--accent-purple)]">Bidirectional</span> Sharing Flow
+                </h2>
+                <p className="text-center text-[var(--text-muted)] mb-6 text-sm">
+                    Remote 1 và Remote 2 chia sẻ components lẫn nhau - Manifest được cache trong memory
+                </p>
+                <BidirectionalSharingDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 49: Production Architecture
+    {
+        id: 49,
+        title: 'Kiến trúc Production',
+        section: 'Phần 9: Production Deployment',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-2 text-center">
+                    <span className="text-[var(--accent-cyan)]">Reverse Proxy</span> Architecture
+                </h2>
+                <p className="text-center text-[var(--text-muted)] mb-4 text-sm">
+                    Ẩn domain remote apps - Tất cả traffic đi qua domain chính
+                </p>
+                <ReverseProxyArchDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 50: Credential Flow
+    {
+        id: 50,
+        title: 'Credential Flow',
+        section: 'Phần 9: Production Deployment',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-2 text-center">
+                    <span className="text-[var(--accent-green)]">Credential</span> Forwarding Flow
+                </h2>
+                <p className="text-center text-[var(--text-muted)] mb-4 text-sm">
+                    Cookie/Token tự động forward qua reverse proxy - Same-origin benefits
+                </p>
+                <CredentialFlowDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 51: Framework Proxy Config
+    {
+        id: 51,
+        title: 'Cấu hình Proxy theo Framework',
+        section: 'Phần 9: Production Deployment',
+        variant: 'code',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4">Proxy Config theo Framework</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <h4 className="text-[var(--accent-cyan)] mb-2 font-bold">Vite</h4>
+                        <CodeBlock
+                            code={`// vite.config.ts
+server: {
+  proxy: {
+    '/mfe/products': {
+      target: 'http://localhost:3001',
+      rewrite: path => 
+        path.replace(/^\\/mfe\\/products/, ''),
+    }
+  }
+}`}
+                            language="typescript"
+                        />
+                    </div>
+                    <div>
+                        <h4 className="text-[var(--accent-purple)] mb-2 font-bold">UmiJS 4</h4>
+                        <CodeBlock
+                            code={`// .umirc.ts
+proxy: {
+  '/mfe/products': {
+    target: 'http://localhost:3001',
+    pathRewrite: { '^/mfe/products': '' },
+    changeOrigin: true
+  }
+},
+mf: {
+  remotes: [
+    { name: 'products', 
+      entry: '/mfe/products/remote.js' }
+  ]
+}`}
+                            language="typescript"
+                        />
+                    </div>
+                </div>
+            </div>
+        ),
+    },
+
+    // Slide 52: Next.js Config
+    {
+        id: 52,
+        title: 'Next.js Rewrites',
+        section: 'Phần 9: Production Deployment',
+        variant: 'code',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4">
+                    <span className="text-[var(--accent-green)]">Next.js</span> Rewrites Config
+                </h2>
+                <CodeBlock
+                    code={`// next.config.js
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/mfe/products/:path*',
+        destination: 'http://internal-products:3001/:path*'
+      },
+      {
+        source: '/mfe/checkout/:path*', 
+        destination: 'http://internal-checkout:3002/:path*'
+      },
+      {
+        source: '/api/:path*',
+        destination: 'http://api-gateway:8080/api/:path*'
+      }
+    ]
+  }
+}`}
+                    language="javascript"
+                />
+                <div className="mt-4 glass p-3 rounded-lg">
+                    <p className="text-xs text-[var(--text-muted)]">
+                        <span className="text-[var(--accent-orange)]">⚠️</span> Với Module Federation, sử dụng thêm{' '}
+                        <code className="text-[var(--accent-cyan)]">@module-federation/nextjs-mf</code>
+                    </p>
+                </div>
+            </div>
+        ),
+    },
+
+    // Slide 53: Dev vs Production
+    {
+        id: 53,
+        title: 'Dev vs Production',
+        section: 'Phần 9: Production Deployment',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-6">Dev Server vs Production</h2>
+                <Table
+                    headers={['Tiêu chí', 'Dev Server', 'Nginx/Kong']}
+                    rows={[
+                        ['Mục đích', 'Hot reload, debugging', 'Serve static, routing'],
+                        ['Performance', 'Chậm (Node.js)', 'Cực nhanh (C, event-driven)'],
+                        ['Connections', '~100-500', '~10,000+'],
+                        ['Security', 'Không rate limit', 'WAF, rate limit'],
+                        ['SSL/TLS', 'Self-signed', 'Production certs'],
+                        ['Caching', '❌ Không', '✅ Gzip, Brotli'],
+                    ]}
+                />
+                <motion.div
+                    className="mt-4 glass p-3 rounded-lg text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <span className="text-[var(--accent-red)]">⚠️</span>
+                    <span className="text-sm text-[var(--text-muted)] ml-2">
+                        Không bao giờ chạy <code className="text-[var(--accent-cyan)]">npm run dev</code> trên production!
+                    </span>
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ==========================================
+    // PHẦN 10: SUMMARY (Slides 54-56)
+    // ==========================================
+
+    // Slide 54: Qiankun vs Module Federation
     {
         id: 49,
         title: 'Qiankun vs Module Federation',

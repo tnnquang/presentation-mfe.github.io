@@ -11,3 +11,6 @@ export { EventBusDiagram } from './EventBusDiagram';
 export { BroadcastChannelDiagram } from './BroadcastChannelDiagram';
 export { MessageChannelDiagram } from './MessageChannelDiagram';
 export { CustomEventDiagram } from './CustomEventDiagram';
+export { BidirectionalSharingDiagram } from './BidirectionalSharingDiagram';
+export { ReverseProxyArchDiagram } from './ReverseProxyArchDiagram';
+export { CredentialFlowDiagram } from './CredentialFlowDiagram';
