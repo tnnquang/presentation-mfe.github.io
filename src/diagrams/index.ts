@@ -14,3 +14,6 @@ export { CustomEventDiagram } from './CustomEventDiagram';
 export { BidirectionalSharingDiagram } from './BidirectionalSharingDiagram';
 export { ReverseProxyArchDiagram } from './ReverseProxyArchDiagram';
 export { CredentialFlowDiagram } from './CredentialFlowDiagram';
+export { RSCChallengesDiagram } from './RSCChallengesDiagram';
+export { HybridRenderingDiagram } from './HybridRenderingDiagram';
+export { SSRvsRSCDiagram } from './SSRvsRSCDiagram';

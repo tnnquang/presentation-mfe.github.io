@@ -15,7 +15,10 @@ import {
     CustomEventDiagram,
     BidirectionalSharingDiagram,
     ReverseProxyArchDiagram,
-    CredentialFlowDiagram
+    CredentialFlowDiagram,
+    RSCChallengesDiagram,
+    HybridRenderingDiagram,
+    SSRvsRSCDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -2107,6 +2110,336 @@ module.exports = {
                     </span>
                     <span className="glass px-6 py-3 rounded-full">
                         <span className="text-[var(--accent-green)]">T</span> TOC
+                    </span>
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // ==========================================
+    // PHẦN NÂNG CAO: SSR/RSC + MODULE FEDERATION
+    // ==========================================
+
+    // Slide: SSR vs RSC Comparison
+    {
+        id: 57,
+        title: 'SSR vs RSC',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4 text-center">
+                    <span className="text-[var(--accent-green)]">SSR</span> vs{' '}
+                    <span className="text-[var(--accent-purple)]">RSC</span> + Module Federation
+                </h2>
+                <SSRvsRSCDiagram />
+            </div>
+        ),
+    },
+
+    // Slide: RSC Challenges
+    {
+        id: 58,
+        title: 'Thách thức RSC + MF',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4 text-center">
+                    Tại sao <span className="text-[var(--accent-red)]">RSC + MF</span> khó?
+                </h2>
+                <RSCChallengesDiagram />
+            </div>
+        ),
+    },
+
+    // Slide: Solution 1 - Skeleton + Client Hydration
+    {
+        id: 59,
+        title: 'Giải pháp: Skeleton + Hydration',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'code',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4">
+                    Solution 1: <span className="text-[var(--accent-cyan)]">Skeleton + Client Hydration</span>
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <h4 className="text-[var(--accent-purple)] mb-2 font-bold text-sm">Server Component</h4>
+                        <CodeBlock
+                            code={`// app/page.tsx (RSC)
+import { Suspense } from 'react';
+import RemoteLoader from './RemoteLoader';
+
+export default async function Page() {
+  // Data fetch on server
+  const data = await fetchData();
+  
+  return (
+    <div>
+      <h1>Host App (RSC)</h1>
+      <Suspense fallback={<Skeleton />}>
+        <RemoteLoader 
+          remoteName="products"
+          data={data} 
+        />
+      </Suspense>
+    </div>
+  );
+}`}
+                            language="typescript"
+                        />
+                    </div>
+                    <div>
+                        <h4 className="text-[var(--accent-cyan)] mb-2 font-bold text-sm">Client Component</h4>
+                        <CodeBlock
+                            code={`// RemoteLoader.tsx
+'use client'; // Đánh dấu Client Component
+
+import dynamic from 'next/dynamic';
+
+const RemoteProduct = dynamic(
+  () => import('products/Card'),
+  { 
+    ssr: false, // Không SSR remote
+    loading: () => <Skeleton />
+  }
+);
+
+export default function RemoteLoader({ data }) {
+  return <RemoteProduct {...data} />;
+}`}
+                            language="typescript"
+                        />
+                    </div>
+                </div>
+                <motion.div
+                    className="mt-4 glass p-3 rounded-lg text-xs"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <span className="text-[var(--accent-green)]">✅</span> Data fetch SSR → Skeleton SSR → Remote CSR hydration
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide: Solution 2 - API Routes Sharing
+    {
+        id: 60,
+        title: 'Giải pháp: API Routes Sharing',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'code',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4">
+                    Solution 2: <span className="text-[var(--accent-orange)]">API Routes Sharing</span>
+                </h2>
+                <p className="text-[var(--text-muted)] mb-4 text-sm">
+                    Remote expose API thay vì component → Host gọi API và render UI
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <h4 className="text-[var(--accent-green)] mb-2 font-bold text-sm">Remote: Export API</h4>
+                        <CodeBlock
+                            code={`// remote-app/app/api/products/route.ts
+export async function GET() {
+  const products = await db.products.findMany();
+  return Response.json(products);
+}
+
+// Remote cũng có thể expose RSC
+// nhưng chỉ như API data source`}
+                            language="typescript"
+                        />
+                    </div>
+                    <div>
+                        <h4 className="text-[var(--accent-purple)] mb-2 font-bold text-sm">Host: Consume API</h4>
+                        <CodeBlock
+                            code={`// host/app/products/page.tsx (RSC)
+async function ProductsPage() {
+  // Gọi API từ remote qua proxy
+  const res = await fetch(
+    '/mfe/products/api/products'
+  );
+  const products = await res.json();
+  
+  // Host tự render UI (SSR/RSC)
+  return <ProductGrid items={products} />;
+}`}
+                            language="typescript"
+                        />
+                    </div>
+                </div>
+                <motion.div
+                    className="mt-4 glass p-3 rounded-lg text-xs"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <span className="text-[var(--accent-orange)]">⚠️</span> Trade-off: Không share UI components, chỉ share data
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide: Hybrid Rendering Flow
+    {
+        id: 61,
+        title: 'Hybrid Rendering Flow',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-2 text-center">
+                    <span className="text-[var(--accent-purple)]">Hybrid</span> Rendering Flow
+                </h2>
+                <p className="text-center text-[var(--text-muted)] mb-4 text-sm">
+                    RSC Host + CSR Remote + API Integration
+                </p>
+                <HybridRenderingDiagram />
+            </div>
+        ),
+    },
+
+    // Slide: Pre-render CSR Remote
+    {
+        id: 62,
+        title: 'Pre-render CSR Remote',
+        section: 'Nâng cao: RSC + MF',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-6">Pre-render CSR Remote trên Host?</h2>
+                <div className="grid grid-cols-2 gap-6">
+                    <motion.div
+                        className="glass p-4 rounded-xl border border-[var(--accent-green)]/30"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
+                        <h3 className="text-[var(--accent-green)] font-bold mb-3">✅ Có thể với @module-federation/node</h3>
+                        <ul className="text-xs text-[var(--text-muted)] space-y-2">
+                            <li>• Polyfill window, document trên server</li>
+                            <li>• Remote không dùng browser-only APIs</li>
+                            <li>• Cần bundle riêng cho SSR</li>
+                        </ul>
+                        <CodeBlock
+                            code={`// Điều kiện: Remote phải "universal"
+if (typeof window === 'undefined') {
+  // Server: dùng mock hoặc skip
+}
+// Không: localStorage, window.location`}
+                            language="javascript"
+                        />
+                    </motion.div>
+                    <motion.div
+                        className="glass p-4 rounded-xl border border-[var(--accent-red)]/30"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
+                        <h3 className="text-[var(--accent-red)] font-bold mb-3">❌ Thực tế: Hầu hết không thể</h3>
+                        <ul className="text-xs text-[var(--text-muted)] space-y-2">
+                            <li>• Remote thường dùng browser APIs</li>
+                            <li>• Third-party libs không universal</li>
+                            <li>• Maintenance burden cao</li>
+                        </ul>
+                        <div className="mt-3 p-2 rounded bg-[var(--accent-orange)]/10 text-[9px]">
+                            <strong className="text-[var(--accent-orange)]">Khuyến nghị:</strong> Dùng Skeleton + CSR Hydration cho production
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        ),
+    },
+
+    // Slide: Rendering Strategy Matrix
+    {
+        id: 63,
+        title: 'Ma trận Chiến lược Render',
+        section: 'Nâng cao: RSC + MF',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-6">Khi nào dùng gì?</h2>
+                <Table
+                    headers={['Remote Type', 'Host Strategy', 'Có thể SSR?', 'Recommendation']}
+                    rows={[
+                        ['CSR (React SPA)', 'Skeleton + Hydration', '❌', 'Production-ready'],
+                        ['SSR (Pages Router)', 'Direct MF integration', '✅', 'Best compatibility'],
+                        ['SSG (Static)', 'Build-time integration', '✅', 'Shared packages'],
+                        ['ISR (Incremental)', 'API + Revalidate', 'Partial', 'Data sharing'],
+                        ['RSC (Server)', 'Không hỗ trợ MF', '❌', 'Đợi MF 2.0+'],
+                    ]}
+                />
+                <motion.div
+                    className="mt-4 grid grid-cols-3 gap-3 text-[9px]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <div className="glass p-2 rounded-lg text-center">
+                        <div className="text-[var(--accent-green)] font-bold">Stable</div>
+                        <div className="text-[var(--text-muted)]">SSR + Pages Router</div>
+                    </div>
+                    <div className="glass p-2 rounded-lg text-center">
+                        <div className="text-[var(--accent-orange)] font-bold">Workaround</div>
+                        <div className="text-[var(--text-muted)]">CSR + Skeleton</div>
+                    </div>
+                    <div className="glass p-2 rounded-lg text-center">
+                        <div className="text-[var(--accent-red)] font-bold">Experimental</div>
+                        <div className="text-[var(--text-muted)]">RSC + MF 2.0</div>
+                    </div>
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide: Best Practices & Trade-offs
+    {
+        id: 64,
+        title: 'Best Practices & Trade-offs',
+        section: 'Nâng cao: RSC + MF',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-6">Tóm tắt & Khuyến nghị</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <motion.div
+                        className="glass p-4 rounded-xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        <h3 className="text-[var(--accent-green)] font-bold mb-3">✅ Best Practices</h3>
+                        <ul className="text-xs text-[var(--text-secondary)] space-y-2">
+                            <li>• <strong>Greenfield + RSC:</strong> Dùng Monorepo shared packages</li>
+                            <li>• <strong>Legacy migration:</strong> Pages Router + MF</li>
+                            <li>• <strong>Mixed rendering:</strong> Skeleton pattern</li>
+                            <li>• <strong>Data sharing:</strong> API Routes proxy</li>
+                            <li>• <strong>Future-proof:</strong> Watch MF 2.0 Enhanced</li>
+                        </ul>
+                    </motion.div>
+                    <motion.div
+                        className="glass p-4 rounded-xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <h3 className="text-[var(--accent-orange)] font-bold mb-3">⚖️ Trade-offs</h3>
+                        <ul className="text-xs text-[var(--text-secondary)] space-y-2">
+                            <li>• <strong>SSR MF:</strong> Stable nhưng hạn chế App Router</li>
+                            <li>• <strong>CSR Remote:</strong> Flexible nhưng không SEO-first</li>
+                            <li>• <strong>Monorepo:</strong> Full SSR nhưng không runtime MF</li>
+                            <li>• <strong>API sharing:</strong> Decoupled nhưng không share UI</li>
+                        </ul>
+                    </motion.div>
+                </div>
+                <motion.div
+                    className="mt-4 p-3 rounded-xl border-2 border-[var(--accent-purple)]/30 bg-[var(--accent-purple)]/5 text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                >
+                    <span className="text-sm text-[var(--accent-purple)] font-medium">
+                        🔮 Next.js 15 + Module Federation 2.0 = Tương lai RSC + MF?
                     </span>
                 </motion.div>
             </div>
