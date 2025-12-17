@@ -178,16 +178,19 @@ export const Navigation = ({
             {/* Navigation controls */}
             <motion.div
                 className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{
                     opacity: showControls ? 1 : 0,
-                    y: showControls ? 0 : 20
+                    y: showControls ? 0 : 20,
+                    scale: showControls ? 1 : 0.95
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             >
-                <div className="flex items-center gap-2 p-2 rounded-2xl 
-                       bg-[#1e1e2e]/90 backdrop-blur-xl border border-white/10 
-                       shadow-2xl shadow-black/50">
+                <div className="flex items-center gap-2 p-2.5 rounded-3xl glass-elevated"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(168,85,247,0.1), inset 0 1px 0 rgba(255,255,255,0.1)'
+                    }}>
 
                     {/* Home */}
                     <button

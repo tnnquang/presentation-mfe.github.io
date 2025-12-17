@@ -11,23 +11,15 @@ interface SlideProps {
 }
 
 const slideVariants = {
-    initial: { opacity: 0, x: 50 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -50 }
-};
-
-const backgroundStyles = {
-    default: 'bg-gradient-to-br from-[#1e1e2e] via-[#2d2d44] to-[#1e1e2e]',
-    title: 'bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#1e1e2e]',
-    section: 'bg-gradient-to-br from-[#2d2d44] via-[#363654] to-[#1e1e2e]',
-    code: 'bg-[#1e1e2e]',
-    diagram: 'bg-gradient-to-br from-[#1e1e2e] to-[#2d2d44]'
+    initial: { opacity: 0, scale: 0.98, filter: 'blur(10px)' },
+    animate: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+    exit: { opacity: 0, scale: 1.02, filter: 'blur(10px)' }
 };
 
 export const Slide = ({
     children,
     className = '',
-    variant = 'default',
+    variant: _variant = 'default',
     slideNumber,
     totalSlides,
     title
@@ -35,38 +27,67 @@ export const Slide = ({
     return (
         <motion.div
             className={`
-        relative w-full h-full flex flex-col overflow-hidden
-        ${backgroundStyles[variant]}
-        ${className}
-      `}
+                relative w-full h-full flex flex-col overflow-hidden
+                ${className}
+            `}
             variants={slideVariants}
             initial="initial"
             animate="animate"
             exit="exit"
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
-            {/* Header */}
+            {/* Animated background orbs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <motion.div
+                    className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%)' }}
+                    animate={{
+                        x: [0, 50, 0],
+                        y: [0, 30, 0],
+                    }}
+                    transition={{ repeat: Infinity, duration: 20, ease: 'easeInOut' }}
+                />
+                <motion.div
+                    className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%)' }}
+                    animate={{
+                        x: [0, -40, 0],
+                        y: [0, -30, 0],
+                    }}
+                    transition={{ repeat: Infinity, duration: 25, ease: 'easeInOut' }}
+                />
+                <motion.div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(255, 107, 203, 0.1) 0%, transparent 70%)' }}
+                    animate={{
+                        scale: [1, 1.2, 1],
+                    }}
+                    transition={{ repeat: Infinity, duration: 15, ease: 'easeInOut' }}
+                />
+            </div>
+
+            {/* Header with glass effect */}
             {(title || slideNumber) && (
                 <div className="absolute top-0 left-0 right-0 flex justify-between items-center px-10 py-5 z-10">
                     {title && (
                         <motion.div
-                            className="flex items-center gap-3"
-                            initial={{ opacity: 0, y: -10 }}
+                            className="flex items-center gap-3 px-4 py-2 rounded-2xl glass-frost"
+                            initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
                         >
-                            <span className="w-1.5 h-6 bg-[var(--accent-purple)] rounded-full" />
-                            <span className="text-lg text-[var(--accent-purple)] font-medium tracking-wide">
+                            <span className="w-1 h-5 rounded-full bg-gradient-to-b from-[var(--accent-purple)] to-[var(--accent-pink)]" />
+                            <span className="text-base font-medium bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-pink)] bg-clip-text text-transparent">
                                 {title}
                             </span>
                         </motion.div>
                     )}
                     {slideNumber && totalSlides && (
                         <motion.div
-                            className="flex items-center gap-2 p-2 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
+                            className="flex items-center gap-2 px-4 py-2 rounded-2xl glass-frost"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3, duration: 0.5 }}
                         >
                             <span className="text-[var(--accent-cyan)] font-bold">{slideNumber}</span>
                             <span className="text-[var(--text-muted)]">/</span>
@@ -76,24 +97,27 @@ export const Slide = ({
                 </div>
             )}
 
-            {/* Content - NO SCROLL, fit viewport for presentation */}
-            <div className="flex-1 flex flex-col justify-center items-center px-16 py-20">
+            {/* Content */}
+            <div className="flex-1 flex flex-col justify-center items-center px-16 py-20 relative z-10">
                 <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
                     {children}
                 </div>
             </div>
 
-            {/* Decorative gradient line at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--accent-blue)] via-[var(--accent-purple)] to-[var(--accent-pink)]" />
-
-            {/* Corner decorations */}
-            <div className="absolute top-0 left-0 w-32 h-32 opacity-20">
-                <div className="absolute top-4 left-4 w-12 h-px bg-gradient-to-r from-[var(--accent-blue)] to-transparent" />
-                <div className="absolute top-4 left-4 w-px h-12 bg-gradient-to-b from-[var(--accent-blue)] to-transparent" />
+            {/* Bottom gradient line with glow */}
+            <div className="absolute bottom-0 left-0 right-0">
+                <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent-purple)] to-transparent opacity-50" />
+                <div className="h-8 bg-gradient-to-t from-[var(--accent-purple)]/5 to-transparent blur-xl" />
             </div>
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-20">
-                <div className="absolute top-4 right-4 w-12 h-px bg-gradient-to-l from-[var(--accent-purple)] to-transparent" />
-                <div className="absolute top-4 right-4 w-px h-12 bg-gradient-to-b from-[var(--accent-purple)] to-transparent" />
+
+            {/* Subtle corner decorations */}
+            <div className="absolute top-8 left-8 opacity-30">
+                <div className="w-16 h-px bg-gradient-to-r from-[var(--accent-cyan)] to-transparent" />
+                <div className="w-px h-16 bg-gradient-to-b from-[var(--accent-cyan)] to-transparent" />
+            </div>
+            <div className="absolute top-8 right-8 opacity-30">
+                <div className="w-16 h-px bg-gradient-to-l from-[var(--accent-purple)] to-transparent ml-auto" />
+                <div className="w-px h-16 bg-gradient-to-b from-[var(--accent-purple)] to-transparent ml-auto" />
             </div>
         </motion.div>
     );
