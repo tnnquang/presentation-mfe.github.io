@@ -1,21 +1,35 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { HashRouter, Routes, Route, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Slide, Navigation, TableOfContents } from './components';
-import { slides, tocItems } from './slides';
+import { slides, tocItems, getSlideBySlug, getSlugForSlide } from './slides';
 import './index.css';
 
-function App() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+// Slide view component with route params
+function SlideView() {
+  const { slideSlug } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showTOC, setShowTOC] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Find slide by slug
+  const currentSlideData = useMemo(() => {
+    if (!slideSlug) return slides[0];
+    return getSlideBySlug(slideSlug, slides) || slides[0];
+  }, [slideSlug]);
+
+  const slideIndex = slides.findIndex(s => s === currentSlideData);
   const totalSlides = slides.length;
 
-  const handleNavigate = useCallback((slideIndex: number) => {
-    if (slideIndex >= 0 && slideIndex < totalSlides) {
-      setCurrentSlide(slideIndex);
+  // Generate slug map for navigation
+  const slugs = useMemo(() => slides.map(s => getSlugForSlide(s)), []);
+
+  const handleNavigate = useCallback((newSlideIndex: number) => {
+    if (newSlideIndex >= 0 && newSlideIndex < totalSlides) {
+      navigate(`/slide/${slugs[newSlideIndex]}`);
     }
-  }, [totalSlides]);
+  }, [totalSlides, navigate, slugs]);
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -51,15 +65,13 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showTOC]);
 
-  const currentSlideData = slides[currentSlide];
-
   return (
     <div className="w-full h-full overflow-hidden">
       <AnimatePresence mode="wait">
         <Slide
-          key={currentSlide}
+          key={location.pathname}
           variant={currentSlideData.variant}
-          slideNumber={currentSlide + 1}
+          slideNumber={slideIndex + 1}
           totalSlides={totalSlides}
           title={currentSlideData.section}
         >
@@ -68,7 +80,7 @@ function App() {
       </AnimatePresence>
 
       <Navigation
-        currentSlide={currentSlide}
+        currentSlide={slideIndex}
         totalSlides={totalSlides}
         onNavigate={handleNavigate}
         onToggleFullscreen={toggleFullscreen}
@@ -81,7 +93,7 @@ function App() {
         {showTOC && (
           <TableOfContents
             items={tocItems}
-            currentSlide={currentSlide}
+            currentSlide={slideIndex}
             isOpen={showTOC}
             onClose={() => setShowTOC(false)}
             onNavigate={handleNavigate}
@@ -89,6 +101,21 @@ function App() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function App() {
+  // Get first slide slug for redirect
+  const firstSlug = getSlugForSlide(slides[0]);
+
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to={`/slide/${firstSlug}`} replace />} />
+        <Route path="/slide/:slideSlug" element={<SlideView />} />
+        <Route path="*" element={<Navigate to={`/slide/${firstSlug}`} replace />} />
+      </Routes>
+    </HashRouter>
   );
 }
 

@@ -17,11 +17,33 @@ import {
 
 export interface SlideData {
     id: number;
+    slug?: string;
     title: string;
     section: string;
     content: ReactNode;
     variant?: 'default' | 'title' | 'section' | 'code' | 'diagram';
 }
+
+// Helper to generate slug from title
+export const generateSlug = (title: string): string => {
+    return title
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/đ/g, 'd')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+};
+
+// Get slide by slug
+export const getSlideBySlug = (slug: string, slidesList: SlideData[]): SlideData | undefined => {
+    return slidesList.find(s => (s.slug || generateSlug(s.title)) === slug);
+};
+
+// Get slug for slide
+export const getSlugForSlide = (slide: SlideData): string => {
+    return slide.slug || generateSlug(slide.title);
+};
 
 const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
     <motion.table
