@@ -136,13 +136,13 @@ export const Navigation = ({
             {/* Slide preview grid */}
             {showSlidePreview && (
                 <motion.div
-                    className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-8"
+                    className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-start justify-center p-8 pt-16 overflow-y-auto"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => setShowSlidePreview(false)}
                 >
-                    <div className="grid grid-cols-5 gap-3 max-w-5xl w-full">
+                    <div className="grid grid-cols-5 gap-3 max-w-5xl w-full pb-24">
                         {Array.from({ length: totalSlides }, (_, i) => (
                             <motion.button
                                 key={i}

