@@ -22,6 +22,19 @@ function SlideView() {
   const slideIndex = slides.findIndex(s => s === currentSlideData);
   const totalSlides = slides.length;
 
+  // Calculate section slide numbers
+  const sectionInfo = useMemo(() => {
+    const section = currentSlideData.section;
+    if (!section) return { current: 0, total: 0 };
+
+    const slidesInSection = slides.filter(s => s.section === section);
+    const currentIndexInSection = slidesInSection.findIndex(s => s === currentSlideData);
+    return {
+      current: currentIndexInSection + 1,
+      total: slidesInSection.length
+    };
+  }, [currentSlideData]);
+
   // Generate slug map for navigation
   const slugs = useMemo(() => slides.map(s => getSlugForSlide(s)), []);
 
@@ -74,6 +87,8 @@ function SlideView() {
           slideNumber={slideIndex + 1}
           totalSlides={totalSlides}
           title={currentSlideData.section}
+          sectionSlideNumber={sectionInfo.current}
+          sectionTotalSlides={sectionInfo.total}
         >
           {currentSlideData.content}
         </Slide>

@@ -8,6 +8,8 @@ interface SlideProps {
     slideNumber?: number;
     totalSlides?: number;
     title?: string;
+    sectionSlideNumber?: number;
+    sectionTotalSlides?: number;
 }
 
 const slideVariants = {
@@ -22,7 +24,9 @@ export const Slide = ({
     variant: _variant = 'default',
     slideNumber,
     totalSlides,
-    title
+    title,
+    sectionSlideNumber,
+    sectionTotalSlides
 }: SlideProps) => {
     return (
         <motion.div
@@ -80,6 +84,11 @@ export const Slide = ({
                             <span className="text-base font-medium bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-pink)] bg-clip-text text-transparent">
                                 {title}
                             </span>
+                            {sectionSlideNumber && sectionTotalSlides && (
+                                <span className="text-xs text-[var(--text-muted)] ml-2">
+                                    ({sectionSlideNumber}/{sectionTotalSlides})
+                                </span>
+                            )}
                         </motion.div>
                     )}
                     {slideNumber && totalSlides && (
