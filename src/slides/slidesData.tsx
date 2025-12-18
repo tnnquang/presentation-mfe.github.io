@@ -43,23 +43,26 @@ export const generateSlug = (title: string): string => {
         .replace(/^-+|-+$/g, '');
 };
 
-// Get slide by slug (supports both id-based and legacy slugs)
+// Get slide by slug (supports index-based slugs)
 export const getSlideBySlug = (slug: string, slidesList: SlideData[]): SlideData | undefined => {
-    // Try exact match with id prefix first
-    const idMatch = slug.match(/^(\d+)-/);
-    if (idMatch) {
-        const id = parseInt(idMatch[1], 10);
-        const slide = slidesList.find(s => s.id === id);
-        if (slide) return slide;
+    // Try exact match with index prefix first (e.g., "1-title-slug")
+    const indexMatch = slug.match(/^(\d+)-/);
+    if (indexMatch) {
+        const index = parseInt(indexMatch[1], 10) - 1; // Convert to 0-based
+        if (index >= 0 && index < slidesList.length) {
+            return slidesList[index];
+        }
     }
     // Fallback to legacy slug matching
     return slidesList.find(s => (s.slug || generateSlug(s.title)) === slug);
 };
 
-// Get slug for slide (uses id prefix for uniqueness)
-export const getSlugForSlide = (slide: SlideData): string => {
+// Get slug for slide (uses display index for uniqueness)
+export const getSlugForSlide = (slide: SlideData, slidesList?: SlideData[]): string => {
     if (slide.slug) return slide.slug;
-    return `${slide.id}-${generateSlug(slide.title)}`;
+    // Use slides array to find index, fallback to id if no array provided
+    const index = slidesList ? slidesList.indexOf(slide) + 1 : slide.id;
+    return `${index}-${generateSlug(slide.title)}`;
 };
 
 const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
@@ -462,9 +465,9 @@ export const slides: SlideData[] = [
         ),
     },
 
-    // Slide 9: Ví dụ đơn giản
+    // Slide 10: Ví dụ đơn giản
     {
-        id: 9,
+        id: 10,
         title: 'Module Federation - Ví dụ',
         section: 'Phần 2: Module Federation',
         variant: 'code',
@@ -499,9 +502,9 @@ const ProductGrid = lazy(() =>
         ),
     },
 
-    // Slide 10: Thuật ngữ quan trọng
+    // Slide 11: Thuật ngữ quan trọng
     {
-        id: 10,
+        id: 11,
         title: 'Thuật ngữ quan trọng',
         section: 'Phần 2: Module Federation',
         content: (
@@ -525,9 +528,9 @@ const ProductGrid = lazy(() =>
         ),
     },
 
-    // Slide 11: remoteEntry.js
+    // Slide 12: remoteEntry.js
     {
-        id: 11,
+        id: 12,
         title: 'remoteEntry.js là gì?',
         section: 'Phần 2: Module Federation',
         variant: 'code',
@@ -576,9 +579,9 @@ new ModuleFederationPlugin({
         ),
     },
 
-    // Slide 12: Module Loading Flow
+    // Slide 13: Module Loading Flow
     {
-        id: 12,
+        id: 13,
         title: 'Luồng Load Module',
         section: 'Phần 2: Module Federation',
         variant: 'diagram',
@@ -590,9 +593,9 @@ new ModuleFederationPlugin({
         ),
     },
 
-    // Slide 13: Shared Dependencies
+    // Slide 14: Shared Dependencies
     {
-        id: 13,
+        id: 14,
         title: 'Shared Dependencies',
         section: 'Phần 2: Module Federation',
         variant: 'code',
@@ -633,9 +636,9 @@ new ModuleFederationPlugin({
         ),
     },
 
-    // Slide 14: Architecture Diagram
+    // Slide 15: Architecture Diagram
     {
-        id: 14,
+        id: 15,
         title: 'Kiến trúc Module Federation',
         section: 'Phần 2: Module Federation',
         variant: 'diagram',
@@ -647,9 +650,9 @@ new ModuleFederationPlugin({
         ),
     },
 
-    // Slide 15: Bidirectional Sharing
+    // Slide 16: Bidirectional Sharing
     {
-        id: 15,
+        id: 16,
         title: 'Bidirectional Sharing',
         section: 'Phần 2: Module Federation',
         content: (
@@ -687,9 +690,9 @@ new ModuleFederationPlugin({
     // PHẦN 3: CẤU HÌNH FRAMEWORK (Slides 16-19)
     // ==========================================
 
-    // Slide 16: Library Recommendations
+    // Slide 17: Library Recommendations
     {
-        id: 16,
+        id: 17,
         title: 'Library Recommendations',
         section: 'Phần 3: Cấu hình Framework',
         content: (

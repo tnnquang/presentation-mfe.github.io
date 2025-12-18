@@ -36,7 +36,7 @@ function SlideView() {
   }, [currentSlideData]);
 
   // Generate slug map for navigation
-  const slugs = useMemo(() => slides.map(s => getSlugForSlide(s)), []);
+  const slugs = useMemo(() => slides.map(s => getSlugForSlide(s, slides)), []);
 
   const handleNavigate = useCallback((newSlideIndex: number) => {
     if (newSlideIndex >= 0 && newSlideIndex < totalSlides) {
