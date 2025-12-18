@@ -16,10 +16,10 @@ import {
     BidirectionalSharingDiagram,
     ReverseProxyArchDiagram,
     CredentialFlowDiagram,
-    RSCChallengesDiagram,
     HybridRenderingDiagram,
     TraditionalSSRFlowDiagram,
-    RSCArchitectureDiagram
+    RSCArchitectureDiagram,
+    RSCFlowDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -2186,15 +2186,12 @@ module.exports = {
     // Slide: RSC Challenges
     {
         id: 58,
-        title: 'Thách thức RSC + MF',
+        title: 'RSC + MF: UML Flow',
         section: 'Nâng cao: RSC + MF',
         variant: 'diagram',
         content: (
             <div className="w-full">
-                <h2 className="text-slide-header mb-4 text-center">
-                    Tại sao <span className="text-[var(--accent-red)]">RSC + MF</span> khó?
-                </h2>
-                <RSCChallengesDiagram />
+                <RSCFlowDiagram />
             </div>
         ),
     },
