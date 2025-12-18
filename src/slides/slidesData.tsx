@@ -18,7 +18,8 @@ import {
     CredentialFlowDiagram,
     RSCChallengesDiagram,
     HybridRenderingDiagram,
-    SSRvsRSCDiagram
+    TraditionalSSRFlowDiagram,
+    RSCArchitectureDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -2120,19 +2121,64 @@ module.exports = {
     // PHẦN NÂNG CAO: SSR/RSC + MODULE FEDERATION
     // ==========================================
 
-    // Slide: SSR vs RSC Comparison
+    // Slide 57: Traditional SSR Flow (UML)
     {
         id: 57,
-        title: 'SSR vs RSC',
+        title: 'Traditional SSR Flow',
         section: 'Nâng cao: RSC + MF',
         variant: 'diagram',
         content: (
             <div className="w-full">
-                <h2 className="text-slide-header mb-4 text-center">
-                    <span className="text-[var(--accent-green)]">SSR</span> vs{' '}
-                    <span className="text-[var(--accent-purple)]">RSC</span> + Module Federation
-                </h2>
-                <SSRvsRSCDiagram />
+                <TraditionalSSRFlowDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 58: RSC Architecture & Challenges
+    {
+        id: 58,
+        title: 'RSC + MF: Thách thức',
+        section: 'Nâng cao: RSC + MF',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <RSCArchitectureDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 59: SSR vs RSC Comparison Table
+    {
+        id: 59,
+        title: 'So sánh SSR vs RSC',
+        section: 'Nâng cao: RSC + MF',
+        content: (
+            <div className="w-full">
+                <h2 className="text-slide-header mb-4">So sánh chi tiết: SSR vs RSC</h2>
+                <Table
+                    headers={['Aspect', 'Traditional SSR', 'RSC (App Router)']}
+                    rows={[
+                        ['Render timing', 'Server → Full HTML', 'Server → Streaming HTML'],
+                        ['JS gửi về client', '✅ Full bundle', '❌ Chỉ Client Components'],
+                        ['Hydration', 'Full hydration toàn app', 'Partial/Selective hydration'],
+                        ['MF Compatible', '✅ Hoàn toàn', '⚠️ Chỉ Client Components'],
+                        ['Shared Scope', '✅ Runtime works', '❌ Không có context'],
+                        ['Use case', 'SEO + Full interactivity', 'Zero-JS server logic'],
+                        ['Frameworks', 'Pages Router, Nuxt 2, Angular', 'App Router, Nuxt 3'],
+                    ]}
+                />
+                <motion.div
+                    className="mt-4 p-3 rounded-lg bg-[var(--accent-orange)]/10 border border-[var(--accent-orange)]/30"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <div className="text-xs text-[var(--text-muted)]">
+                        <span className="text-[var(--accent-orange)] font-bold">💡 Key Insight:</span>{' '}
+                        <span className="text-white">SSR gửi toàn bộ JS → MF có thể execute.</span>{' '}
+                        RSC chỉ gửi JS của Client Components → MF chỉ hoạt động trong Client boundary.
+                    </div>
+                </motion.div>
             </div>
         ),
     },

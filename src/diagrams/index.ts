@@ -17,3 +17,5 @@ export { CredentialFlowDiagram } from './CredentialFlowDiagram';
 export { RSCChallengesDiagram } from './RSCChallengesDiagram';
 export { HybridRenderingDiagram } from './HybridRenderingDiagram';
 export { SSRvsRSCDiagram } from './SSRvsRSCDiagram';
+export { TraditionalSSRFlowDiagram } from './TraditionalSSRFlowDiagram';
+export { RSCArchitectureDiagram } from './RSCArchitectureDiagram';
