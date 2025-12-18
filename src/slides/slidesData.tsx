@@ -43,14 +43,23 @@ export const generateSlug = (title: string): string => {
         .replace(/^-+|-+$/g, '');
 };
 
-// Get slide by slug
+// Get slide by slug (supports both id-based and legacy slugs)
 export const getSlideBySlug = (slug: string, slidesList: SlideData[]): SlideData | undefined => {
+    // Try exact match with id prefix first
+    const idMatch = slug.match(/^(\d+)-/);
+    if (idMatch) {
+        const id = parseInt(idMatch[1], 10);
+        const slide = slidesList.find(s => s.id === id);
+        if (slide) return slide;
+    }
+    // Fallback to legacy slug matching
     return slidesList.find(s => (s.slug || generateSlug(s.title)) === slug);
 };
 
-// Get slug for slide
+// Get slug for slide (uses id prefix for uniqueness)
 export const getSlugForSlide = (slide: SlideData): string => {
-    return slide.slug || generateSlug(slide.title);
+    if (slide.slug) return slide.slug;
+    return `${slide.id}-${generateSlug(slide.title)}`;
 };
 
 const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
