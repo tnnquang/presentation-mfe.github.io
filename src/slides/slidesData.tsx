@@ -19,7 +19,8 @@ import {
     HybridRenderingDiagram,
     TraditionalSSRFlowDiagram,
     RSCArchitectureDiagram,
-    RSCFlowDiagram
+    RSCFlowDiagram,
+    MFIntegrationTypesDiagram
 } from '../diagrams';
 
 export interface SlideData {
@@ -402,9 +403,22 @@ export const slides: SlideData[] = [
     // PHẦN 2: MODULE FEDERATION (Slides 8-15)
     // ==========================================
 
-    // Slide 8: Module Federation là gì
+    // Slide 8: MF Integration Types - NEW
     {
         id: 8,
+        title: 'Các phương pháp tích hợp MFE',
+        section: 'Phần 2: Module Federation',
+        variant: 'diagram',
+        content: (
+            <div className="w-full">
+                <MFIntegrationTypesDiagram />
+            </div>
+        ),
+    },
+
+    // Slide 9: Module Federation là gì
+    {
+        id: 9,
         title: 'Module Federation là gì?',
         section: 'Phần 2: Module Federation',
         variant: 'section',

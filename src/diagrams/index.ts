@@ -20,3 +20,4 @@ export { SSRvsRSCDiagram } from './SSRvsRSCDiagram';
 export { TraditionalSSRFlowDiagram } from './TraditionalSSRFlowDiagram';
 export { RSCArchitectureDiagram } from './RSCArchitectureDiagram';
 export { RSCFlowDiagram } from './RSCFlowDiagram';
+export { MFIntegrationTypesDiagram } from './MFIntegrationTypesDiagram';

@@ -98,8 +98,8 @@ export const Slide = ({
             )}
 
             {/* Content */}
-            <div className="flex-1 flex flex-col justify-center items-center px-16 py-20 relative z-10">
-                <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
+            <div className="flex-1 flex flex-col justify-center items-center px-8 py-16 relative z-10">
+                <div className={`w-full mx-auto flex flex-col items-center ${_variant === 'diagram' ? 'max-w-7xl' : 'max-w-5xl'}`}>
                     {children}
                 </div>
             </div>
