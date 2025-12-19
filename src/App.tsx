@@ -13,13 +13,26 @@ function SlideView() {
   const [showTOC, setShowTOC] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Find slide by slug
-  const currentSlideData = useMemo(() => {
-    if (!slideSlug) return slides[0];
-    return getSlideBySlug(slideSlug, slides) || slides[0];
+  // Find slide by slug and get index
+  const { currentSlideData, slideIndex } = useMemo(() => {
+    if (!slideSlug) return { currentSlideData: slides[0], slideIndex: 0 };
+
+    // Parse index from slug (e.g., "9-module-federation" -> index 8)
+    const indexMatch = slideSlug.match(/^(\d+)-/);
+    if (indexMatch) {
+      const displayNum = parseInt(indexMatch[1], 10);
+      const idx = displayNum - 1; // Convert to 0-based
+      if (idx >= 0 && idx < slides.length) {
+        return { currentSlideData: slides[idx], slideIndex: idx };
+      }
+    }
+
+    // Fallback: find by slug content
+    const found = getSlideBySlug(slideSlug, slides);
+    const foundIdx = found ? slides.indexOf(found) : 0;
+    return { currentSlideData: found || slides[0], slideIndex: foundIdx >= 0 ? foundIdx : 0 };
   }, [slideSlug]);
 
-  const slideIndex = slides.findIndex(s => s === currentSlideData);
   const totalSlides = slides.length;
 
   // Calculate section slide numbers
