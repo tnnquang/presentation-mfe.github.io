@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/presentation-mfe.github.io/', // GitHub Pages project path
+  base: '/', // Root path for Vercel deployment
 })
 
 
