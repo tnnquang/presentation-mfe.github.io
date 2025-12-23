@@ -1434,6 +1434,160 @@ const ProductsPage = () => {
         ),
     },
 
+    // Slide 40: Basename Routing Pattern - NEW
+    {
+        id: 41,
+        title: 'Basename Routing Pattern',
+        section: 'Phần 7: Routing',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">
+                    <span className="text-[var(--accent-green)]">✅</span> Basename Routing Pattern
+                </h2>
+                <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-blue)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Nguyên tắc:</strong> Host pass <code>basename</code> prop, Remote tự tạo BrowserRouter với basename đó.</p>
+                </motion.div>
+                <div className="grid grid-cols-2 gap-4">
+                    <CodeBlock
+                        title="Host Page"
+                        language="tsx"
+                        showLineNumbers={false}
+                        code={`// Host chỉ cần 1 page cho mỗi remote
+const UsersPage = () => (
+  <RemoteLoader 
+    remoteName="remote1" 
+    componentName="App" 
+    props={{ basename: '/users' }}
+  />
+);`}
+                    />
+                    <CodeBlock
+                        title="Remote App"
+                        language="tsx"
+                        showLineNumbers={false}
+                        code={`// Remote tự quản lý routing nội bộ
+const App = ({ basename = '/users' }) => (
+  <BrowserRouter basename={basename}>
+    <Routes>
+      <Route path="/" element={<UserList />} />
+      <Route path="/detail/:id" element={<UserDetail />} />
+      <Route path="/new" element={<CreateUser />} />
+    </Routes>
+  </BrowserRouter>
+);`}
+                    />
+                </div>
+                <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-green)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-green)]">✅ Kết quả:</strong> URL <code>/users/detail/123</code> sync tự động với browser. Remote xử lý routing, Host chỉ là entry point.
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide 41: Route Scalability - NEW
+    {
+        id: 42,
+        title: 'Route Scalability',
+        section: 'Phần 7: Routing',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-6">Route Scalability: Trước vs Sau</h2>
+                <div className="grid grid-cols-2 gap-6">
+                    <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-red)]/50" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-red)] font-bold mb-4 text-lg">❌ TRƯỚC: Route explosion</h4>
+                        <CodeBlock
+                            language="typescript"
+                            showLineNumbers={false}
+                            code={`routes: [
+  { path: '/users', ... },
+  { path: '/users/:id', ... },
+  { path: '/users/new', ... },
+  { path: '/users/roles', ... },
+  { path: '/products', ... },
+  { path: '/products/:id', ... },
+  // ... 50+ routes!
+]`}
+                        />
+                    </motion.div>
+                    <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-green)]/50" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                        <h4 className="text-[var(--accent-green)] font-bold mb-4 text-lg">✅ SAU: Basename pattern</h4>
+                        <CodeBlock
+                            language="typescript"
+                            showLineNumbers={false}
+                            code={`routes: [
+  // Chỉ 3 routes cho 3 remotes!
+  { path: '/users/*', component: './users' },
+  { path: '/products/*', component: './products' },
+  { path: '/reports/*', component: './reports' },
+]
+
+// Remote tự quản lý routing nội bộ`}
+                        />
+                    </motion.div>
+                </div>
+                <motion.div className="mt-6 glass p-4 rounded-lg border border-[var(--accent-cyan)]/50 text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                    <strong className="text-[var(--accent-cyan)]">🚀 Lợi ích:</strong> Thêm route mới trong remote → <strong>không cần sửa Host!</strong>
+                </motion.div>
+            </div>
+        ),
+    },
+
+    // Slide 42: Dev Proxy Configuration - NEW
+    {
+        id: 43,
+        title: 'Dev Proxy Configuration',
+        section: 'Phần 7: Routing',
+        variant: 'code',
+        content: (
+            <div className="w-full max-w-5xl mx-auto">
+                <h2 className="text-slide-header mb-4">Dev Proxy: Ẩn Remote URLs</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <motion.div className="glass p-4 rounded-lg mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <h4 className="text-[var(--accent-cyan)] font-bold mb-2">Mục đích</h4>
+                            <ul className="text-sm space-y-1 text-[var(--text-secondary)]">
+                                <li>• Ẩn URLs của remote servers</li>
+                                <li>• Browser chỉ thấy <code>/mf/remote1/...</code></li>
+                                <li>• Chuẩn bị cho production (nginx)</li>
+                            </ul>
+                        </motion.div>
+                        <motion.div className="glass p-4 rounded-lg border border-[var(--accent-orange)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                            <h4 className="text-[var(--accent-orange)] font-bold mb-2">⚠️ Lưu ý</h4>
+                            <p className="text-sm text-[var(--text-secondary)]">
+                                Vite remotes không hoạt động tốt với proxy (ESM imports). Chỉ UmiJS/Webpack remotes.
+                            </p>
+                        </motion.div>
+                    </div>
+                    <CodeBlock
+                        title=".umirc.ts"
+                        language="typescript"
+                        showLineNumbers={false}
+                        code={`// Dev Proxy Configuration
+proxy: {
+  '/mf/remote1': {
+    target: 'http://localhost:3001',
+    changeOrigin: true,
+    pathRewrite: { '^/mf/remote1': '' },
+  },
+  '/mf/remote3': {
+    target: 'http://localhost:3003',
+    changeOrigin: true,
+    pathRewrite: { '^/mf/remote3': '' },
+  },
+},
+
+// mf.remotes
+remotes: [
+  { name: 'remote1', entry: '/mf/remote1/remote.js' },
+  { name: 'remote3', entry: '/mf/remote3/remote.js' },
+]`}
+                    />
+                </div>
+            </div>
+        ),
+    },
+
     // ==========================================
     // PHẦN 8: TROUBLESHOOTING
     // ==========================================
