@@ -331,11 +331,11 @@ export const slides: SlideData[] = [
                 <Table
                     headers={['Vấn đề', 'Mô tả chi tiết']}
                     rows={[
-                        ['<span class="text-[var(--accent-red)] font-bold">Build chậm</span>', 'App lớn (&gt;100K LOC) → build mất 10-30 phút'],
-                        ['<span class="text-[var(--accent-red)] font-bold">Conflict nhiều</span>', '10 developers cùng merge → Git conflicts thường xuyên'],
-                        ['<span class="text-[var(--accent-red)] font-bold">Coupling cao</span>', 'Thay đổi 1 module → phải test toàn bộ'],
-                        ['<span class="text-[var(--accent-red)] font-bold">Deploy rủi ro</span>', 'Bug 1 feature → rollback toàn bộ app'],
-                        ['<span class="text-[var(--accent-red)] font-bold">Khó scale team</span>', 'Thêm người → overhead tăng (meetings, conflicts)'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Build chậm</span>', 'App lớn (&gt;100K dòng code) → build mất 10-30 phút'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Xung đột code nhiều</span>', '10 developers cùng merge → Git conflicts thường xuyên'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Phụ thuộc chặt</span>', 'Thay đổi 1 module → phải test toàn bộ app'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Triển khai rủi ro</span>', 'Bug 1 feature → rollback toàn bộ app'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Khó mở rộng team</span>', 'Thêm người → tăng họp hành, xung đột code'],
                     ]}
                 />
             </div>
@@ -355,11 +355,11 @@ export const slides: SlideData[] = [
                 <Table
                     headers={['Lợi ích', 'Mô tả chi tiết']}
                     rows={[
-                        ['<span class="text-[var(--accent-green)] font-bold">Build nhanh</span>', 'Mỗi app nhỏ (~10K LOC) → build 1-2 phút'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Build nhanh</span>', 'Mỗi app nhỏ (~10K dòng code) → build 1-2 phút'],
                         ['<span class="text-[var(--accent-green)] font-bold">Team độc lập</span>', 'Team A deploy không cần đợi Team B review/merge'],
-                        ['<span class="text-[var(--accent-green)] font-bold">Fault isolation</span>', 'Bug ở Products → Users vẫn hoạt động bình thường'],
-                        ['<span class="text-[var(--accent-green)] font-bold">Tech flexibility</span>', 'Team mới có thể dùng framework mới (Vue 3, Solid.js)'],
-                        ['<span class="text-[var(--accent-green)] font-bold">Scale dễ dàng</span>', 'Thêm team = tạo remote app mới, plug vào host'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Cách ly lỗi</span>', 'Bug ở Products → Users vẫn hoạt động bình thường'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Linh hoạt công nghệ</span>', 'Team mới có thể dùng framework mới (Vue 3, Solid.js)'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Mở rộng dễ dàng</span>', 'Thêm team = tạo remote app mới, plug vào host'],
                     ]}
                 />
             </div>
