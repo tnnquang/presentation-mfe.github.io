@@ -12,16 +12,16 @@ export const MFIntegrationTypesDiagram = () => {
             </h2>
 
             <div className="grid grid-cols-3 gap-4">
-                {/* Build-time Integration */}
+                {/* Build-time Integration - GREEN background */}
                 <motion.div
-                    className="glass p-4 rounded-xl border-2 border-[var(--accent-blue)]/40"
+                    className="p-4 rounded-xl border-2 border-[var(--accent-green)] bg-[var(--accent-green)]/20"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
                 >
                     <div className="text-center mb-3">
                         <span className="text-3xl">📦</span>
-                        <h3 className="text-[var(--accent-blue)] font-bold text-base mt-1">Build-time</h3>
+                        <h3 className="text-[var(--accent-green)] font-bold text-base mt-1">Build-time</h3>
                         <p className="text-[var(--text-muted)] text-xs">NPM packages / Monorepo</p>
                     </div>
                     <div className="space-y-2 text-xs">
@@ -43,19 +43,18 @@ export const MFIntegrationTypesDiagram = () => {
                     </div>
                 </motion.div>
 
-                {/* Runtime Integration - Module Federation */}
+                {/* Runtime Integration - GREEN background + DEMO badge inline */}
                 <motion.div
-                    className="glass p-4 rounded-xl border-2 border-[var(--accent-purple)]/60 ring-2 ring-[var(--accent-purple)]/20"
+                    className="p-4 rounded-xl border-2 border-[var(--accent-green)] bg-[var(--accent-green)]/20"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                 >
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-[var(--accent-purple)] text-[9px] font-bold text-white">
-                        DEMO
-                    </div>
                     <div className="text-center mb-3">
                         <span className="text-3xl">🔗</span>
-                        <h3 className="text-[var(--accent-purple)] font-bold text-base mt-1">Runtime (MF)</h3>
+                        <h3 className="text-[var(--accent-purple)] font-bold text-base mt-1">
+                            Runtime <span className="ml-1 px-2 py-0.5 rounded-full bg-[var(--accent-purple)] text-[8px] text-white align-middle">DEMO</span>
+                        </h3>
                         <p className="text-[var(--text-muted)] text-xs">Module Federation</p>
                     </div>
                     <div className="space-y-2 text-xs">
@@ -63,13 +62,13 @@ export const MFIntegrationTypesDiagram = () => {
                             <span className="text-[var(--accent-green)]">✅</span> Deploy độc lập
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-green)]/10">
-                            <span className="text-[var(--accent-green)]">✅</span> Share dependencies
+                            <span className="text-[var(--accent-green)]">✅</span> Chia sẻ dependencies
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-green)]/10">
-                            <span className="text-[var(--accent-green)]">✅</span> Dynamic loading
+                            <span className="text-[var(--accent-green)]">✅</span> Tải động (lazy load)
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-orange)]/10">
-                            <span className="text-[var(--accent-orange)]">⚠️</span> Version conflicts
+                            <span className="text-[var(--accent-orange)]">⚠️</span> Xung đột version
                         </div>
                     </div>
                     <div className="mt-3 p-2 rounded bg-[#0a0a12] text-[10px] font-mono text-center text-[var(--accent-purple)]">
@@ -77,34 +76,39 @@ export const MFIntegrationTypesDiagram = () => {
                     </div>
                 </motion.div>
 
-                {/* Server-side Composition */}
+                {/* Server-side Composition - RED background */}
                 <motion.div
-                    className="glass p-4 rounded-xl border-2 border-[var(--accent-orange)]/40"
+                    className="p-4 rounded-xl border-2 border-[var(--accent-red)] bg-[var(--accent-red)]/20"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                 >
                     <div className="text-center mb-3">
                         <span className="text-3xl">🖥️</span>
-                        <h3 className="text-[var(--accent-orange)] font-bold text-base mt-1">Server-side</h3>
-                        <p className="text-[var(--text-muted)] text-xs">Edge / SSI / ESI</p>
+                        <h3 className="text-[var(--accent-red)] font-bold text-base mt-1">
+                            Server-side <span className="ml-1 px-1 py-0.5 rounded bg-[var(--accent-red)] text-[7px] text-white align-middle">CHƯA PHỔ BIẾN</span>
+                        </h3>
+                        <p className="text-[var(--text-muted)] text-xs">HTML Fragment Stitching</p>
                     </div>
                     <div className="space-y-2 text-xs">
                         <div className="p-2 rounded bg-[var(--accent-green)]/10">
                             <span className="text-[var(--accent-green)]">✅</span> SEO tốt nhất
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-green)]/10">
-                            <span className="text-[var(--accent-green)]">✅</span> Fast initial load
+                            <span className="text-[var(--accent-green)]">✅</span> Tải trang nhanh
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-red)]/10">
-                            <span className="text-[var(--accent-red)]">❌</span> Phức tạp hơn
+                            <span className="text-[var(--accent-red)]">❌</span> Kiến trúc phức tạp
                         </div>
                         <div className="p-2 rounded bg-[var(--accent-red)]/10">
-                            <span className="text-[var(--accent-red)]">❌</span> State management khó
+                            <span className="text-[var(--accent-red)]">❌</span> Không dùng Module Federation
                         </div>
                     </div>
                     <div className="mt-3 p-2 rounded bg-[#0a0a12] text-[10px] font-mono text-center">
-                        Tailor, Mosaic, Podium
+                        Piral, Tailor, Podium
+                    </div>
+                    <div className="mt-2 text-[9px] text-[var(--accent-orange)] text-center">
+                        ⏳ Đợi MF v2 (ByteDance)
                     </div>
                 </motion.div>
             </div>
@@ -129,25 +133,9 @@ export const MFIntegrationTypesDiagram = () => {
                     </p>
                 </div>
             </motion.div>
-
-            {/* Why Module Federation */}
-            <motion.div
-                className="mt-4 p-3 rounded-xl border-2 border-dashed border-[var(--accent-purple)]/50 bg-[var(--accent-purple)]/5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-            >
-                <div className="text-center">
-                    <span className="text-[var(--accent-purple)] font-bold text-sm">
-                        💡 Demo này sử dụng Module Federation vì:
-                    </span>
-                    <p className="text-[var(--text-muted)] text-xs mt-1">
-                        Deploy độc lập • Shared React/libs • Hot reload • Phù hợp enterprise scale
-                    </p>
-                </div>
-            </motion.div>
         </div>
     );
 };
 
 export default MFIntegrationTypesDiagram;
+

@@ -113,6 +113,31 @@ export const Slide = ({
                 </div>
             </div>
 
+            {/* Author Watermark - Bottom Left */}
+            <div className="absolute bottom-6 left-10 z-10">
+                <motion.div
+                    className="text-xs text-[var(--text-muted)] opacity-60"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.6 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <div className="font-medium">Quang Đẹp Trai</div>
+                    <div className="text-[10px]">(Trần Ngọc Nhật Quang)</div>
+                </motion.div>
+            </div>
+
+            {/* Company Logo - Bottom Right */}
+            <div className="absolute bottom-6 right-10 z-10">
+                <motion.img
+                    src="https://www.finviet.com.vn/wp-content/uploads/2024/08/logo-2048x1207.png"
+                    alt="FinViet"
+                    className="h-8 w-auto object-contain opacity-50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.5 }}
+                    transition={{ delay: 0.5 }}
+                />
+            </div>
+
             {/* Bottom gradient line with glow */}
             <div className="absolute bottom-0 left-0 right-0">
                 <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent-purple)] to-transparent opacity-50" />

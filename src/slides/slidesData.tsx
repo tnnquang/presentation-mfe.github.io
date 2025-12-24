@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { CodeBlock } from '../components';
 import {
     MonolithVsMfeDiagram,
-    ModuleFederationArchDiagram,
     TokenSyncFlowDiagram,
     ModuleLoadingFlowDiagram,
     CSSIsolationDiagram,
@@ -205,7 +204,7 @@ export const slides: SlideData[] = [
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
                     >
-                        <span className="text-lg text-white/80">Từ cơ bản đến nâng cao</span>
+                        <span className="text-lg text-white/80">Trần Ngọc Nhật Quang</span>
                     </motion.div>
 
                     {/* Decorative line */}
@@ -333,7 +332,7 @@ export const slides: SlideData[] = [
                     rows={[
                         ['<span class="text-[var(--accent-red)] font-bold">Build chậm</span>', 'App lớn (&gt;100K dòng code) → build mất 10-30 phút'],
                         ['<span class="text-[var(--accent-red)] font-bold">Xung đột code nhiều</span>', '10 developers cùng merge → Git conflicts thường xuyên'],
-                        ['<span class="text-[var(--accent-red)] font-bold">Phụ thuộc chặt</span>', 'Thay đổi 1 module → phải test toàn bộ app'],
+                        ['<span class="text-[var(--accent-red)] font-bold">Phụ thuộc chặt chẽ</span>', 'Thay đổi 1 module → phải test toàn bộ app'],
                         ['<span class="text-[var(--accent-red)] font-bold">Triển khai rủi ro</span>', 'Bug 1 feature → rollback toàn bộ app'],
                         ['<span class="text-[var(--accent-red)] font-bold">Khó mở rộng team</span>', 'Thêm người → tăng họp hành, xung đột code'],
                     ]}
@@ -369,35 +368,35 @@ export const slides: SlideData[] = [
     // Slide 7: Khi nào KHÔNG nên dùng
     {
         id: 7,
-        title: 'Khi nào KHÔNG nên dùng MFE?',
+        title: 'Khi nào nên / không nên dùng MFE?',
         section: 'Phần 1: MFE Cơ bản',
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-6">Khi nào nên / không nên dùng MFE?</h2>
                 <div className="grid grid-cols-2 gap-6">
                     <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-red)]/50" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                        <h4 className="text-[var(--accent-red)] font-bold mb-4 text-lg">❌ KHÔNG dùng khi</h4>
+                        <h4 className="text-[var(--accent-red)] font-bold mb-4 text-lg">❌ KHÔNG nên dùng khi</h4>
                         <ul className="text-sm text-[var(--text-secondary)] space-y-2">
-                            <li>• App nhỏ, 1-3 developers</li>
-                            <li>• Không cần deploy độc lập</li>
-                            <li>• Team nhỏ, không có vấn đề coordination</li>
-                            <li>• Startup MVP cần ship nhanh</li>
-                            <li>• Chưa có DevOps maturity</li>
+                            <li>• Độ phức tạp thấp, không cần tách rời</li>
+                            <li>• Các tính năng ít phụ thuộc lẫn nhau</li>
+                            <li>• Không cần triển khai độc lập từng phần</li>
+                            <li>• Dự án MVP cần ra sản phẩm nhanh</li>
+                            <li>• Chưa có quy trình DevOps/CI-CD ổn định</li>
                         </ul>
                     </motion.div>
                     <motion.div className="glass p-6 rounded-lg border-2 border-[var(--accent-green)]/50" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                         <h4 className="text-[var(--accent-green)] font-bold mb-4 text-lg">✅ NÊN dùng khi</h4>
                         <ul className="text-sm text-[var(--text-secondary)] space-y-2">
-                            <li>• Team lớn (&gt;5 devs) hoặc nhiều team</li>
-                            <li>• Cần deploy độc lập các feature</li>
-                            <li>• Legacy migration dần dần</li>
-                            <li>• Nhiều product lines cùng platform</li>
-                            <li>• Scale organization, không chỉ code</li>
+                            <li>• Độ phức tạp cao, cần tách thành các module</li>
+                            <li>• Cần triển khai độc lập từng tính năng</li>
+                            <li>• Chuyển đổi dần từ hệ thống cũ (Legacy)</li>
+                            <li>• Nhiều dòng sản phẩm dùng chung nền tảng</li>
+                            <li>• Nhiều team phát triển cùng một sản phẩm</li>
                         </ul>
                     </motion.div>
                 </div>
                 <motion.div className="mt-6 glass p-4 rounded-lg border border-[var(--accent-orange)]/50 text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-orange)]">⚠️ Lưu ý:</strong> MFE thêm complexity đáng kể. Giải quyết vấn đề <strong>organization</strong>, không phải technical!
+                    <strong className="text-[var(--accent-orange)]">⚠️ Lưu ý:</strong> MFE thêm độ phức tạp đáng kể. Phù hợp để giải quyết vấn đề <strong>tổ chức đội nhóm</strong>, không chỉ là vấn đề kỹ thuật!
                 </motion.div>
             </div>
         ),
@@ -437,8 +436,8 @@ export const slides: SlideData[] = [
                 <div className="grid grid-cols-3 gap-4">
                     {[
                         { icon: '🌐', title: 'Load Runtime', desc: 'Load JS modules từ remote server tại runtime (không phải build time)' },
-                        { icon: '📦', title: 'Không cần npm', desc: 'Không cần publish lên npm, import trực tiếp từ URL' },
-                        { icon: '🔗', title: 'Share Dependencies', desc: 'Chia sẻ dependencies (React, antd) để tránh duplicate' },
+                        { icon: '📦', title: 'Không cần publish lên edge CDN (npm,..)', desc: 'Không cần publish lên npm, import trực tiếp từ URL' },
+                        { icon: '🔗', title: 'Share Dependencies', desc: 'Chia sẻ dependencies (React, antd, helper,...) để tránh duplicate' },
                     ].map((item, i) => (
                         <motion.div
                             key={item.title}
@@ -457,43 +456,6 @@ export const slides: SlideData[] = [
         ),
     },
 
-    // Slide 10: Ví dụ đơn giản
-    {
-        id: 10,
-        title: 'Module Federation - Ví dụ',
-        section: 'Phần 2: Module Federation',
-        variant: 'code',
-        content: (
-            <div className="w-full max-w-4xl mx-auto">
-                <h2 className="text-slide-header mb-6">Ví dụ đơn giản</h2>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <motion.div className="glass p-4 rounded-lg mb-4 border-2 border-[var(--accent-red)]/50" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            <h4 className="text-[var(--accent-red)] font-bold mb-2">❌ Cách cũ: Publish npm</h4>
-                            <code className="text-xs text-[var(--text-muted)]">npm install @company/product-grid</code>
-                        </motion.div>
-                        <motion.div className="glass p-4 rounded-lg border-2 border-[var(--accent-green)]/50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                            <h4 className="text-[var(--accent-green)] font-bold mb-2">✅ Module Federation</h4>
-                            <code className="text-xs text-[var(--text-muted)]">import('remote2/ProductGrid')</code>
-                        </motion.div>
-                    </div>
-                    <CodeBlock
-                        title="Host App"
-                        language="tsx"
-                        showLineNumbers={false}
-                        code={`// Import trực tiếp từ remote
-const ProductGrid = lazy(() => 
-  import('remote2/ProductGrid')
-);
-
-// Webpack sẽ fetch từ:
-// http://localhost:3002/remoteEntry.js`}
-                    />
-                </div>
-            </div>
-        ),
-    },
-
     // Slide 11: Thuật ngữ quan trọng
     {
         id: 11,
@@ -505,12 +467,12 @@ const ProductGrid = lazy(() =>
                 <Table
                     headers={['Thuật ngữ', 'Định nghĩa', 'Ví dụ']}
                     rows={[
-                        ['<span class="text-[var(--accent-blue)] font-bold">Host</span> <span class="text-[var(--text-muted)]">(Ứng dụng Cha)</span>', 'App tiêu thụ (consume) modules từ remotes', 'host-umi4 - app chính'],
-                        ['<span class="text-[var(--accent-green)] font-bold">Remote</span> <span class="text-[var(--text-muted)]">(Ứng dụng Con)</span>', 'App cung cấp (expose) modules cho hosts', 'remote-vite - ProductGrid'],
-                        ['<span class="text-[var(--accent-orange)] font-bold">remoteEntry.js</span>', 'File manifest chứa metadata', 'http://...3002/remoteEntry.js'],
-                        ['<span class="text-[var(--accent-purple)] font-bold">Shared</span>', 'Dependencies chia sẻ giữa apps', 'react, react-dom, antd'],
-                        ['<span class="text-[var(--accent-cyan)] font-bold">Singleton</span>', 'Đảm bảo chỉ 1 instance', 'React phải singleton!'],
-                        ['<span class="text-[var(--accent-pink)] font-bold">Eager</span>', 'Load ngay khi app start, không lazy', 'eager: true cho React'],
+                        ['<span class="text-[var(--accent-blue)] font-bold">Host/App shell</span> <span class="text-[var(--text-muted)]">(Ứng dụng Cha)</span>', 'App chính sử dụng các modules từ các ứng dụng con', 'host-umi4 - app chính'],
+                        ['<span class="text-[var(--accent-green)] font-bold">Remote</span> <span class="text-[var(--text-muted)]">(Ứng dụng Con)</span>', 'App cung cấp (expose) modules cho ứng dụng cha', 'remote-vite - ProductGrid'],
+                        ['<span class="text-[var(--accent-orange)] font-bold">remoteEntry.js</span>', 'File manifest chứa metadata của các ứng dụng con', 'http://...3002/remoteEntry.js'],
+                        ['<span class="text-[var(--accent-purple)] font-bold">Shared</span>', 'Dependencies chia sẻ giữa các ứng dụng', 'react, react-dom, antd,...'],
+                        ['<span class="text-[var(--accent-cyan)] font-bold">Singleton</span>', 'Đảm bảo chỉ 1 instance được xuất hiện trong DOM', 'React phải singleton!'],
+                        ['<span class="text-[var(--accent-pink)] font-bold">Eager</span>', 'Load ngay khi ứng dụng khởi động', 'eager: true cho React'],
                     ]}
                 />
                 <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-blue)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
@@ -541,9 +503,9 @@ const ProductGrid = lazy(() =>
                             </ul>
                         </motion.div>
                         <motion.div className="glass p-4 rounded-lg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                            <h4 className="text-[var(--accent-orange)] font-bold mb-2">🔄 Tên file theo Framework</h4>
+                            <h4 className="text-[var(--accent-orange)] font-bold mb-2">🔄 Tên file đặt theo quy tắc của nền tảng (thư viện hoặc framework) hỗ trợ</h4>
                             <Table
-                                headers={['Framework', 'Default Name']}
+                                headers={['Nền tảng', 'Tên mặc định']}
                                 rows={[
                                     ['Webpack', 'remoteEntry.js'],
                                     ['UmiJS v4', 'remote.js'],
@@ -585,126 +547,9 @@ new ModuleFederationPlugin({
         ),
     },
 
-    // Slide 14: Shared Dependencies
-    {
-        id: 14,
-        title: 'Shared Dependencies',
-        section: 'Phần 2: Module Federation',
-        variant: 'code',
-        content: (
-            <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-4">Cấu hình Shared Dependencies</h2>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Table
-                            headers={['Option', 'Mô tả']}
-                            rows={[
-                                ['<code class="text-[var(--accent-blue)]">singleton</code>', 'Chỉ 1 instance (React BẮT BUỘC!)'],
-                                ['<code class="text-[var(--accent-green)]">eager</code>', 'Load ngay, không lazy'],
-                                ['<code class="text-[var(--accent-orange)]">requiredVersion</code>', 'Version tối thiểu'],
-                                ['<code class="text-[var(--accent-purple)]">strictVersion</code>', 'Phải đúng version'],
-                            ]}
-                        />
-                    </div>
-                    <CodeBlock
-                        title="Ví dụ đầy đủ"
-                        language="typescript"
-                        showLineNumbers={false}
-                        code={`shared: {
-  react: {
-    singleton: true,  // BẮT BUỘC!
-    eager: true,      // Tránh flash
-    requiredVersion: '^18.0.0',
-  },
-  antd: { singleton: true },
-  lodash: { /* Không singleton OK */ },
-}`}
-                    />
-                </div>
-                <motion.div className="mt-4 glass p-4 rounded-lg border-2 border-[var(--accent-red)]/50 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-red)]">⚠️ Quan trọng:</strong> React PHẢI là singleton, nếu không hooks sẽ break! (Invalid hook call error)
-                </motion.div>
-            </div>
-        ),
-    },
-
-    // Slide 15: Architecture Diagram
-    {
-        id: 15,
-        title: 'Kiến trúc Module Federation',
-        section: 'Phần 2: Module Federation',
-        variant: 'diagram',
-        content: (
-            <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">Kiến trúc Module Federation</h2>
-                <ModuleFederationArchDiagram />
-            </div>
-        ),
-    },
-
-    // Slide 16: Bidirectional Sharing
-    {
-        id: 16,
-        title: 'Bidirectional Sharing',
-        section: 'Phần 2: Module Federation',
-        content: (
-            <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-4">App vừa là Host vừa là Remote?</h2>
-                <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-green)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <p className="text-sm"><strong className="text-[var(--accent-green)]">✅ CÓ THỂ!</strong> Gọi là "Bidirectional Hosts"</p>
-                </motion.div>
-                <div className="grid grid-cols-2 gap-6">
-                    <motion.div className="glass p-6 rounded-lg text-center" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                        <h4 className="text-[var(--accent-blue)] font-bold mb-2">App A</h4>
-                        <p className="text-xs text-[var(--text-muted)] mb-2">(host + remote)</p>
-                        <div className="text-sm space-y-1">
-                            <div className="text-[var(--accent-green)]">exposes: ./CompA</div>
-                            <div className="text-[var(--accent-orange)]">remotes: appB</div>
-                        </div>
-                    </motion.div>
-                    <motion.div className="glass p-6 rounded-lg text-center" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                        <h4 className="text-[var(--accent-purple)] font-bold mb-2">App B</h4>
-                        <p className="text-xs text-[var(--text-muted)] mb-2">(host + remote)</p>
-                        <div className="text-sm space-y-1">
-                            <div className="text-[var(--accent-green)]">exposes: ./CompB</div>
-                            <div className="text-[var(--accent-orange)]">remotes: appA</div>
-                        </div>
-                    </motion.div>
-                </div>
-                <motion.div className="mt-4 text-center text-[var(--accent-cyan)] text-2xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-                    ◄───────────────►
-                </motion.div>
-            </div>
-        ),
-    },
-
     // ==========================================
     // PHẦN 3: CẤU HÌNH FRAMEWORK (Slides 16-19)
     // ==========================================
-
-    // Slide 17: Library Recommendations
-    {
-        id: 17,
-        title: 'Library Recommendations',
-        section: 'Phần 3: Cấu hình Framework',
-        content: (
-            <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">Library theo Platform</h2>
-                <Table
-                    headers={['Platform', 'Library', 'Lý do đề xuất']}
-                    rows={[
-                        ['<span class="text-[var(--accent-blue)] font-bold">Webpack</span>', 'ModuleFederationPlugin', 'Native, best documented'],
-                        ['<span class="text-[var(--accent-green)] font-bold">UmiJS v3/v4</span>', '@umijs/plugin-mf', 'Zero config, tích hợp sẵn'],
-                        ['<span class="text-[var(--accent-purple)] font-bold">Vite</span>', '@originjs/vite-plugin-federation', 'Stable, community-tested'],
-                        ['<span class="text-[var(--accent-orange)] font-bold">Next.js</span>', '@module-federation/nextjs-mf', 'Official, SSR support'],
-                    ]}
-                />
-                <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-cyan)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-cyan)]">💡 Note:</strong> Theo dõi Module Federation 2.0 (Universe) của ByteDance cho hỗ trợ SSR và App Router tốt hơn.
-                </motion.div>
-            </div>
-        ),
-    },
 
     // Slide 17: UmiJS Host Config
     {
@@ -1197,7 +1042,7 @@ export const tokenStore = new TokenStore();`}
 .btn { background: blue; padding: 20px; }
 
 /* → Khi cả 2 remote load vào host: CONFLICT!
-   → Kết quả: .btn cuối cùng sẽ "thắng" */`}
+   → Kết quả: .btn cuối cùng sẽ được sử dụng */`}
                 />
                 <motion.div className="mt-4 glass p-4 rounded-lg border-2 border-[var(--accent-red)]/50 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                     <strong className="text-[var(--accent-red)]">Tại sao xảy ra?</strong> CSS là global scope. Khi nhiều remote apps load vào cùng 1 page, tất cả CSS merge thành 1 → class name trùng = conflict!
@@ -1214,7 +1059,7 @@ export const tokenStore = new TokenStore();`}
         variant: 'diagram',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">CSS Isolation Strategies</h2>
+                <h2 className="text-slide-header mb-6">Các cách thức có thể áp dụng để cách ly CSS</h2>
                 <CSSIsolationDiagram />
             </div>
         ),
@@ -1223,22 +1068,22 @@ export const tokenStore = new TokenStore();`}
     // Slide 31: CSS Solutions Comparison
     {
         id: 32,
-        title: 'So sánh CSS Solutions',
+        title: 'So sánh các giải pháp cô lập CSS',
         section: 'Phần 6: Cách ly CSS',
         content: (
             <div className="w-full max-w-5xl mx-auto">
-                <h2 className="text-slide-header mb-6">So sánh các giải pháp CSS</h2>
+                <h2 className="text-slide-header mb-6">So sánh các giải pháp cô lập CSS</h2>
                 <Table
-                    headers={['Giải pháp', 'Isolation', 'Setup', 'Developer Experience']}
+                    headers={['Giải pháp', 'Mức độ cô lập', 'Cài đặt', 'Trải nghiệm lập trình']}
                     rows={[
-                        ['<span class="text-[var(--accent-green)] font-bold">CSS Modules</span> ✅', '<span class="text-[var(--accent-green)]">Tốt</span>', 'Zero config', 'DX tuyệt vời - viết CSS bình thường'],
-                        ['<span class="text-[var(--accent-purple)]">CSS-in-JS</span>', '<span class="text-[var(--accent-green)]">Tốt</span>', 'Cài lib', 'Phải học syntax mới, runtime cost'],
-                        ['<span class="text-[var(--accent-orange)]">BEM Convention</span>', '<span class="text-[var(--accent-orange)]">Trung bình</span>', 'Không cần', 'Phụ thuộc discipline của team'],
+                        ['<span class="text-[var(--accent-green)] font-bold">CSS Modules</span> ✅', '<span class="text-[var(--accent-green)]">Tốt</span>', 'Không cần cấu hình', 'Tuyệt vời - viết CSS bình thường'],
+                        ['<span class="text-[var(--accent-purple)]">CSS-in-JS</span>', '<span class="text-[var(--accent-green)]">Tốt</span>', 'Cài thư viện', 'Phải học cú pháp mới, có chi phí runtime'],
+                        ['<span class="text-[var(--accent-orange)]">BEM Convention</span>', '<span class="text-[var(--accent-orange)]">Trung bình</span>', 'Không cần', 'Phụ thuộc kỷ luật của team'],
                         ['<span class="text-[var(--accent-cyan)]">Shadow DOM</span>', '<span class="text-[var(--accent-green)]">Hoàn hảo</span>', 'Phức tạp', 'Khó debug, ảnh hưởng React'],
                     ]}
                 />
                 <motion.div className="mt-4 glass p-4 rounded-lg border-2 border-[var(--accent-green)]/50 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-green)]">🏆 Recommend:</strong> CSS Modules - Zero config, zero runtime, syntax quen thuộc, hỗ trợ type-safe với TypeScript!
+                    <strong className="text-[var(--accent-green)]">🏆 Đề xuất:</strong> CSS Modules - Không cần cấu hình, không có chi phí runtime, cú pháp quen thuộc, hỗ trợ type-safe với TypeScript!
                 </motion.div>
             </div>
         ),
@@ -1319,30 +1164,30 @@ const Button = ({ primary }) => (
         content: (
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-4">
-                    <span className="text-[var(--accent-orange)]">⚠️</span> History Synchronization
+                    <span className="text-[var(--accent-orange)]">⚠️</span> Đồng bộ lịch sử duyệt web
                 </h2>
                 <motion.div className="glass p-4 rounded-lg border-2 border-[var(--accent-red)]/50 mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <h4 className="text-[var(--accent-red)] font-bold">Vấn đề phổ biến nhất khi làm MFE!</h4>
                     <p className="text-sm text-[var(--text-secondary)]">
-                        Khi navigate từ Host → Remote, nút Back/Forward của browser có thể không hoạt động đúng nếu không đồng bộ history object.
+                        Khi navigate từ Ứng dụng cha → Ứng dụng con, nút Back/Forward của trình duyệt có thể không hoạt động đúng nếu không đồng bộ history object.
                     </p>
                 </motion.div>
                 <div className="grid grid-cols-2 gap-4">
                     <CodeBlock
-                        title="Host App - Truyền history"
+                        title="Ứng dụng cha - Truyền history"
                         language="tsx"
                         showLineNumbers={false}
-                        code={`// Host truyền history cho Remote
+                        code={`// Ứng dụng cha truyền history cho ứng dụng con
 <RemoteApp 
   history={window.history}
   basename="/products" 
 />`}
                     />
                     <CodeBlock
-                        title="Remote App - Nhận history"
+                        title="Ứng dụng con - Nhận history"
                         language="tsx"
                         showLineNumbers={false}
-                        code={`// Remote sử dụng history từ Host
+                        code={`// Ứng dụng con sử dụng history từ ứng dụng cha
 export function mount({ history, basename }) {
   const router = createBrowserRouter({
     basename,
@@ -1352,7 +1197,7 @@ export function mount({ history, basename }) {
                     />
                 </div>
                 <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-green)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-green)]">💡 Giải pháp:</strong> Remote App phải sử dụng cùng history object với Host, không tự tạo history mới.
+                    <strong className="text-[var(--accent-green)]">💡 Giải pháp:</strong> Ứng dụng con phải sử dụng cùng history object với ứng dụng cha, không tự tạo history mới.
                 </motion.div>
             </div>
         ),
@@ -1368,7 +1213,7 @@ export function mount({ history, basename }) {
             <div className="w-full max-w-5xl mx-auto">
                 <h2 className="text-slide-header mb-4">Routing: Single History Pattern</h2>
                 <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-blue)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Nguyên tắc:</strong> Chỉ có 1 history instance. Host sở hữu và share cho remotes.</p>
+                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Nguyên tắc:</strong> Chỉ có 1 history instance. Ứng dụng cha sở hữu và share cho các ứng dụng con.</p>
                 </motion.div>
                 <div className="grid grid-cols-2 gap-4">
                     <CodeBlock
@@ -1381,10 +1226,10 @@ export function mount({ history, basename }) {
 export const history = createBrowserHistory();`}
                     />
                     <CodeBlock
-                        title="Remote sử dụng"
+                        title="Ứng dụng con sử dụng"
                         language="tsx"
                         showLineNumbers={false}
-                        code={`// Remote nhận history từ props
+                        code={`// Ứng dụng con nhận history từ props
 const ProductsApp = ({ history, basePath }) => (
   <Router history={history}>
     <Routes>
@@ -1415,7 +1260,7 @@ const ProductsApp = ({ history, basePath }) => (
 import { useHistory } from 'umi';
 
 // Lazy load từ remote
-const ProductGrid = lazy(() => import('remote2/ProductGrid'));
+const ProductGrid = lazy(() => import('remote2/ProductGrid')); // Lazy load từ ứng dụng con
 
 const ProductsPage = () => {
   const history = useHistory();
@@ -1446,14 +1291,14 @@ const ProductsPage = () => {
                     <span className="text-[var(--accent-green)]">✅</span> Basename Routing Pattern
                 </h2>
                 <motion.div className="glass p-4 rounded-lg mb-4 border border-[var(--accent-blue)]/30" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Nguyên tắc:</strong> Host pass <code>basename</code> prop, Remote tự tạo BrowserRouter với basename đó.</p>
+                    <p className="text-sm"><strong className="text-[var(--accent-blue)]">Ứng dụng cha:</strong> Truyền <code>basename</code> cho ứng dụng con. <strong>Ứng dụng con:</strong> Tự tạo BrowserRouter với basename đó.</p>
                 </motion.div>
                 <div className="grid grid-cols-2 gap-4">
                     <CodeBlock
-                        title="Host Page"
+                        title="Ứng dụng cha"
                         language="tsx"
                         showLineNumbers={false}
-                        code={`// Host chỉ cần 1 page cho mỗi remote
+                        code={`// Ứng dụng cha chỉ cần 1 page cho mỗi ứng dụng con
 const UsersPage = () => (
   <RemoteLoader 
     remoteName="remote1" 
@@ -1463,10 +1308,10 @@ const UsersPage = () => (
 );`}
                     />
                     <CodeBlock
-                        title="Remote App"
+                        title="Ứng dụng con"
                         language="tsx"
                         showLineNumbers={false}
-                        code={`// Remote tự quản lý routing nội bộ
+                        code={`// Ứng dụng con tự quản lý routing nội bộ
 const App = ({ basename = '/users' }) => (
   <BrowserRouter basename={basename}>
     <Routes>
@@ -1479,7 +1324,7 @@ const App = ({ basename = '/users' }) => (
                     />
                 </div>
                 <motion.div className="mt-4 glass p-4 rounded-lg border border-[var(--accent-green)]/30 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-green)]">✅ Kết quả:</strong> URL <code>/users/detail/123</code> sync tự động với browser. Remote xử lý routing, Host chỉ là entry point.
+                    <strong className="text-[var(--accent-green)]">✅ Kết quả:</strong> URL <code>/users/detail/123</code> sync tự động với browser. Ứng dụng con xử lý routing, ứng dụng cha chỉ là entry point.
                 </motion.div>
             </div>
         ),
@@ -1516,18 +1361,18 @@ const App = ({ basename = '/users' }) => (
                             language="typescript"
                             showLineNumbers={false}
                             code={`routes: [
-  // Chỉ 3 routes cho 3 remotes!
+  // Chỉ 3 routes cho 3 ứng dụng con!
   { path: '/users/*', component: './users' },
   { path: '/products/*', component: './products' },
   { path: '/reports/*', component: './reports' },
 ]
 
-// Remote tự quản lý routing nội bộ`}
+// Ứng dụng con tự quản lý routing nội bộ`}
                         />
                     </motion.div>
                 </div>
                 <motion.div className="mt-6 glass p-4 rounded-lg border border-[var(--accent-cyan)]/50 text-sm text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                    <strong className="text-[var(--accent-cyan)]">🚀 Lợi ích:</strong> Thêm route mới trong remote → <strong>không cần sửa Host!</strong>
+                    <strong className="text-[var(--accent-cyan)]">🚀 Lợi ích:</strong> Thêm route mới trong ứng dụng con → <strong>không cần sửa ứng dụng cha!</strong>
                 </motion.div>
             </div>
         ),
@@ -1634,7 +1479,7 @@ remotes: [
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                 >
-                    Cảm ơn đã lắng nghe!
+                    Cảm ơn đã quý vị đã tham dự và lắng nghe!
                 </motion.h1>
                 <motion.p
                     className="text-slide-body text-[var(--text-secondary)] mb-8"

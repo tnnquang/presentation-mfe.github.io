@@ -15,7 +15,7 @@ export const CSSIsolationDiagram = () => {
             recommended: true,
         },
         {
-            name: 'Styled Components',
+            name: 'CSS-In-JS',
             icon: '💅',
             color: 'var(--accent-purple)',
             example: '.btn → .sc-bdfBQB.kTzXmj',
